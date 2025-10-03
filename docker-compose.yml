@@ -1,6 +1,5 @@
 #SPDX-License-Identifier: MIT
 services:
-
   grafana:
     image: grafana/grafana
     ports:
@@ -13,13 +12,13 @@ services:
     volumes:
       - ./gf_provisioning/dashboards:/etc/grafana/provisioning/dashboards:z
       - ./gf_provisioning/datasources:/etc/grafana/provisioning/datasources:z
-      
+
   prometheus:
     image: prom/prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:z
     extra_hosts:
-     - "host.containers.internal:host-gateway"
+      - "host.containers.internal:host-gateway"
 
   postgres-exporter:
     image: quay.io/prometheuscommunity/postgres-exporter
@@ -29,5 +28,4 @@ services:
       DATA_SOURCE_USER: "${AUGUR_DB_USER:-augur}"
       DATA_SOURCE_PASS: "${AUGUR_DB_PASSWORD:-augur}"
     extra_hosts:
-     - "host.containers.internal:host-gateway"
-
+      - "host.containers.internal:host-gateway"
