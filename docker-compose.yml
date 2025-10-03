@@ -6,8 +6,8 @@ services:
     ports:
       - 3000:3000
     environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: password
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USERNAME:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-password}
       GF_LOG_LEVEL: error
       DS_PROMETHEUS_AUGUR: Augur Postgres
     volumes:
@@ -25,7 +25,7 @@ services:
     image: quay.io/prometheuscommunity/postgres-exporter
     entrypoint: /bin/postgres_exporter --no-collector.wal
     environment:
-      DATA_SOURCE_URI: "host.containers.internal:5432/augur?sslmode=disable"
+      DATA_SOURCE_URI: "${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${AUGUR_DATABASE:-augur}?sslmode=disable"
       DATA_SOURCE_USER: "${AUGUR_DB_USER:-augur}"
       DATA_SOURCE_PASS: "${AUGUR_DB_PASSWORD:-augur}"
     extra_hosts:
