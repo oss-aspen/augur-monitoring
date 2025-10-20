@@ -14,6 +14,7 @@ This includes:
 1. clone the repo
 2. create a .env file containing your Augur DB credentials and preferred grafana login. A template is available in `.env.sample`
 3. do `podman compose up -d` or `docker compose up -d` from the root of the repo to start the monitoring stack
+   - if you have a .env file with a different name than `.env`, you'll probably want to include `--env-file=<your env file>` in the command.
 
 ## Viewing the Dashboards:
 
