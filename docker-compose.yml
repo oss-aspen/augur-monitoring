@@ -4,6 +4,7 @@ services:
     image: grafana/grafana
     ports:
       - 3000:3000
+    env_file: .env
     environment:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_USERNAME:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-password}
@@ -23,6 +24,7 @@ services:
   postgres-exporter:
     image: quay.io/prometheuscommunity/postgres-exporter
     entrypoint: /bin/postgres_exporter --no-collector.wal
+    env_file: .env
     environment:
       DATA_SOURCE_URI: "${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${AUGUR_DATABASE:-augur}?sslmode=disable"
       DATA_SOURCE_USER: "${AUGUR_DB_USER:-augur}"
