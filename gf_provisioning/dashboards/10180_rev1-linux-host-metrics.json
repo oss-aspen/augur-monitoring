@@ -84,7 +84,10 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "decimals": 0,
       "description": "Time since last boot",
       "format": "s",
@@ -171,7 +174,10 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "description": "Number of processors",
       "format": "none",
       "gauge": {
@@ -255,7 +261,10 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "decimals": 0,
       "description": "Amount of memory",
       "format": "decbytes",
@@ -341,7 +350,10 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "decimals": 1,
       "format": "percentunit",
       "gauge": {
@@ -426,7 +438,10 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "decimals": 1,
       "format": "percentunit",
       "gauge": {
@@ -510,7 +525,10 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "decimals": 1,
       "description": "Free diskspace",
       "format": "percentunit",
@@ -596,7 +614,10 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "decimals": null,
       "description": "Network traffic in the last hour",
       "format": "decbytes",
@@ -681,7 +702,10 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "decimals": null,
       "description": "Network traffic in the last hour",
       "format": "decbytes",
@@ -759,7 +783,10 @@
     },
     {
       "columns": [],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 4,
@@ -875,7 +902,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "fill": 1,
       "gridPos": {
         "h": 6,
@@ -978,7 +1008,10 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "augur_prometheus_01"
+          },
           "fill": 1,
           "gridPos": {
             "h": 6,
@@ -1106,7 +1139,10 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "augur_prometheus_01"
+          },
           "fill": 2,
           "gridPos": {
             "h": 6,
@@ -1215,7 +1251,10 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "augur_prometheus_01"
+          },
           "fill": 2,
           "gridPos": {
             "h": 6,
@@ -1344,7 +1383,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1434,7 +1476,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1535,7 +1580,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "augur_prometheus_01"
+      },
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1641,7 +1689,10 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "augur_prometheus_01"
+        },
         "definition": "label_values(node_time_seconds{job=\"$job\"},instance)",
         "hide": 0,
         "includeAll": false,
@@ -1663,7 +1714,10 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "augur_prometheus_01"
+        },
         "definition": "label_values(node_boot_time_seconds,job)",
         "hide": 0,
         "includeAll": false,
