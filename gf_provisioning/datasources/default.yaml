@@ -1,6 +1,12 @@
 apiVersion: 1
 
 datasources:
-  - name: Augur Postgres
+  - name: Augur Prometheus
     type: prometheus
     url: http://prometheus:9090
+    access: proxy # 'proxy' means the Grafana server handles requests
+    editable: false
+    isDefault: true
+    # This is the magic key!
+    # Give it a unique, stable string.
+    uid: augur_prometheus_01
