@@ -1,11 +1,11 @@
 apiVersion: 1
 
 providers:
-  - name: 'Default' # A name for this provider
+  - name: "Default" # A name for this provider
     orgId: 1
     type: file
     disableDeletion: false # Set to true to prevent deleting dashboards from UI
     editable: false # Set to false to make dashboards read-only
     options:
       # This path *must* match the volume mount in your docker-compose.yml
-      path: /var/lib/grafana/dashboards
+      path: /etc/grafana/provisioning/dashboards
