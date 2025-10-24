@@ -1,26 +1,11 @@
 apiVersion: 1
 
 providers:
-  - name: Postgres Dash # A uniquely identifiable name for the provider
-    # folder: Services # The folder where to place the dashboards
+  - name: 'Default' # A name for this provider
+    orgId: 1
     type: file
+    disableDeletion: false # Set to true to prevent deleting dashboards from UI
+    editable: false # Set to false to make dashboards read-only
     options:
-      path:
-        /etc/grafana/provisioning/dashboards/9628_rev8-postgres-grafana.json
-        # Default path for Windows: C:/Program Files/GrafanaLabs/grafana/public/dashboards
-        # Default path for Linux is: /var/lib/grafana/dashboards
-
-  - name: Flower Dash # A uniquely identifiable name for the provider
-    # folder: Services # The folder where to place the dashboards
-    type: file
-    options:
-      path:
-        /etc/grafana/provisioning/dashboards/flower.json
-        # Default path for Windows: C:/Program Files/GrafanaLabs/grafana/public/dashboards
-        # Default path for Linux is: /var/lib/grafana/dashboards
-
-  - name: Host Metrics # A uniquely identifiable name for the provider
-    # folder: Services # The folder where to place the dashboards
-    type: file
-    options:
-      path: /etc/grafana/provisioning/dashboards/10180_rev1-linux-host-metrics.json
+      # This path *must* match the volume mount in your docker-compose.yml
+      path: /var/lib/grafana/dashboards
