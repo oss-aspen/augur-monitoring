@@ -18,3 +18,9 @@ providers:
         /etc/grafana/provisioning/dashboards/flower.json
         # Default path for Windows: C:/Program Files/GrafanaLabs/grafana/public/dashboards
         # Default path for Linux is: /var/lib/grafana/dashboards
+
+  - name: Host Metrics # A uniquely identifiable name for the provider
+    # folder: Services # The folder where to place the dashboards
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards/10180_rev1-linux-host-metrics.json
