@@ -20,6 +20,7 @@ services:
       - 9090:9090
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:z
+      - prometheus_data:/prometheus
     extra_hosts:
       - "host.containers.internal:host-gateway"
 
@@ -33,3 +34,6 @@ services:
       DATA_SOURCE_PASS: "${AUGUR_DB_PASSWORD:-augur}"
     extra_hosts:
       - "host.containers.internal:host-gateway"
+
+volumes:
+  prometheus_data:
