@@ -5,34 +5,98 @@ databases:
     # password: !env AUGUR_DB_PASSWORD
 
 metrics:
-  metric1:
+  augur_core_repos_pending_count:
     type: gauge
-    description: A sample gauge
-  metric2:
-    type: summary
-    description: A sample summary
-    # labels: [l1, l2]
-    expiration: 24h
-  metric3:
-    type: histogram
-    description: A sample histogram
-    buckets: [10, 20, 50, 100, 1000]
-  metric4:
-    type: enum
-    description: A sample enum
-    states: [foo, bar, baz]
+    description: Number of repositories awaiting core collection.
+  augur_core_repos_error_count:
+    type: gauge
+    description: Number of repositories where core collection has failed.
+  augur_core_repos_success_count:
+    type: gauge
+    description: Number of repositories where core collection has succeeded.
+  augur_secondary_repos_pending_count:
+    type: gauge
+    description: Number of repositories awaiting secondary collection.
+  augur_secondary_repos_error_count:
+    type: gauge
+    description: Number of repositories where secondary collection has failed.
+  augur_secondary_repos_success_count:
+    type: gauge
+    description: Number of repositories where secondary collection has succeeded.
+  augur_secondary_repos_never_collected_count:
+    type: gauge
+    description: Number of repositories where secondary collection has never run (NULL last collected date).
+  augur_facade_repos_error_count:
+    type: gauge
+    description: Number of repositories where facade collection has failed.
+  augur_facade_repos_pending_count:
+    type: gauge
+    description: Number of repositories awaiting facade collection.
+  augur_facade_repos_never_collected_count:
+    type: gauge
+    description: Number of repositories where facade collection has never run (excluding 'Ignore').
+  augur_repos_currently_collecting:
+    type: gauge
+    description: Number of repositories currently in the 'Collecting' status, categorized by collection stage.
+    labels: [collection_stage]
+  augur_core_collected_recently_count:
+    type: gauge
+    description: Count of repos where core data was collected after a recent threshold (e.g., last 30 days).
+
 
 queries:
-  query1:
-    interval: 5
+  core_status_counts:
+    interval: 30
     databases: [augur]
-    metrics: [metric1]
-    sql: SELECT random() / 1000000000000000 AS metric1
-  query2:
-    interval: 20
-    timeout: 0.5
-    databases: [augur]
-    metrics: [metric2, metric3]
+    metrics: [augur_core_repos_pending_count, augur_core_repos_error_count, augur_core_repos_success_count]
     sql: |
-      SELECT abs(random() / 1000000000000000) AS metric2,
-             abs(random() / 10000000000000000) AS metric3
+      SELECT
+        COUNT(CASE WHEN core_status = 'Pending' THEN 1 END) AS augur_core_repos_pending_count,
+        COUNT(CASE WHEN core_status = 'Error' THEN 1 END) AS augur_core_repos_error_count,
+        COUNT(CASE WHEN core_status = 'Success' THEN 1 END) AS augur_core_repos_success_count
+      FROM augur_operations.collection_status;
+  secondary_status_counts:
+    interval: 30
+    databases: [augur]
+    metrics: [augur_secondary_repos_pending_count, augur_secondary_repos_error_count, augur_secondary_repos_success_count, augur_secondary_repos_never_collected_count]
+    sql: |
+      SELECT
+        COUNT(CASE WHEN secondary_status = 'Pending' THEN 1 END) AS augur_secondary_repos_pending_count,
+        COUNT(CASE WHEN secondary_status = 'Error' THEN 1 END) AS augur_secondary_repos_error_count,
+        COUNT(CASE WHEN secondary_status = 'Success' THEN 1 END) AS augur_secondary_repos_success_count,
+        COUNT(CASE WHEN secondary_data_last_collected IS NULL THEN 1 END) AS augur_secondary_repos_never_collected_count
+      FROM augur_operations.collection_status;
+  facade_status_counts:
+    interval: 30
+    databases: [augur]
+    metrics: [augur_facade_repos_error_count, augur_facade_repos_pending_count, augur_facade_repos_never_collected_count]
+    sql: |
+      SELECT
+        COUNT(CASE WHEN facade_status = 'Error' THEN 1 END) AS augur_facade_repos_error_count,
+        COUNT(CASE WHEN facade_status = 'Pending' THEN 1 END) AS augur_facade_repos_pending_count,
+        COUNT(CASE WHEN facade_data_last_collected IS NULL AND facade_status != 'Ignore' THEN 1 END) AS augur_facade_repos_never_collected_count
+      FROM augur_operations.collection_status;
+  active_collection:
+    interval: 15
+    databases: [augur]
+    metrics: [augur_repos_currently_collecting]
+    sql: |
+      SELECT 'core' AS collection_stage, COUNT(*) AS augur_repos_currently_collecting
+      FROM augur_operations.collection_status
+      WHERE core_status = 'Collecting'
+      UNION ALL
+      SELECT 'secondary' AS collection_stage, COUNT(*) AS augur_repos_currently_collecting
+      FROM augur_operations.collection_status
+      WHERE secondary_status = 'Collecting'
+      UNION ALL
+      SELECT 'facade' AS collection_stage, COUNT(*) AS augur_repos_currently_collecting
+      FROM augur_operations.collection_status
+      WHERE facade_status = 'Collecting';
+  recency_check:
+    interval: 300 # Less frequent check
+    databases: [augur]
+    metrics: [augur_core_collected_recently_count]
+    sql: |
+      SELECT COUNT(*) AS augur_core_collected_recently_count
+      FROM augur_operations.collection_status
+      WHERE core_data_last_collected > now() - interval '30 day'; -- Using a rolling window
