@@ -11,7 +11,7 @@ metrics:
   metric2:
     type: summary
     description: A sample summary
-    labels: [l1, l2]
+    # labels: [l1, l2]
     expiration: 24h
   metric3:
     type: histogram
@@ -35,6 +35,4 @@ queries:
     metrics: [metric2, metric3]
     sql: |
       SELECT abs(random() / 1000000000000000) AS metric2,
-             abs(random() / 10000000000000000) AS metric3,
-             "value1" AS l1,
-             "value2" AS l2
+             abs(random() / 10000000000000000) AS metric3

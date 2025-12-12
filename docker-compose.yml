@@ -45,7 +45,7 @@ services:
       - --config
       - /etc/query-exporter/config.yaml
     volumes:
-      - ./query_exporter.yml:/etc/query-exporter/config.yaml
+      - ./query-exporter:/etc/query-exporter:Z
     extra_hosts:
       - "host.containers.internal:host-gateway"
 
