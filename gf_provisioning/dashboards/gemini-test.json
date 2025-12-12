@@ -1,0 +1,370 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "datasource",
+                    "uid": "augur_prometheus_01"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "description": "Dashboard for database metrics exported by your custom application.",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": null,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "panels": [],
+            "title": "Database Query Health and Performance",
+            "type": "row"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {},
+                    "mappings": [
+                        {
+                            "options": {
+                                "1": {
+                                    "color": "green",
+                                    "text": "OK"
+                                },
+                                "0": {
+                                    "color": "red",
+                                    "text": "Error"
+                                }
+                            },
+                            "type": "value"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 0,
+                "y": 1
+            },
+            "id": 1,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "rate"
+                    ]
+                }
+            },
+            "pluginVersion": "10.0.0",
+            "targets": [
+                {
+                    "expr": "sum by (query) (rate(queries_total{status=\"success\"}[5m]))",
+                    "legendFormat": "{{query}} Success Rate (ops/sec)",
+                    "refId": "A"
+                }
+            ],
+            "title": "Query Success Rate (ops/sec)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "lineStyle": "solid",
+                        "lineWidth": 1,
+                        "pointSize": 5
+                    },
+                    "unit": "s"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 6,
+                "y": 1
+            },
+            "id": 2,
+            "targets": [
+                {
+                    "expr": "sum by (query) (rate(query_latency_sum[5m])) / sum by (query) (rate(query_latency_count[5m]))",
+                    "legendFormat": "{{query}} Avg Latency",
+                    "refId": "A"
+                }
+            ],
+            "title": "Query Average Latency (5m)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {},
+                    "unit": "s"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 12,
+                "y": 1
+            },
+            "id": 3,
+            "targets": [
+                {
+                    "expr": "query_interval",
+                    "legendFormat": "{{query}} Interval",
+                    "refId": "A"
+                }
+            ],
+            "title": "Query Configured Interval",
+            "type": "timeseries"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "lineStyle": "solid",
+                        "lineWidth": 1,
+                        "pointSize": 5
+                    },
+                    "unit": "s"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 18,
+                "y": 1
+            },
+            "id": 4,
+            "targets": [
+                {
+                    "expr": "histogram_quantile(0.95, sum(rate(query_latency_bucket[5m])) by (le, query))",
+                    "legendFormat": "{{query}} P95 Latency",
+                    "refId": "A"
+                }
+            ],
+            "title": "Query P95 Latency (5m)",
+            "type": "timeseries"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 9
+            },
+            "panels": [],
+            "title": "Application Defined Metrics (metric1, metric2, metric3)",
+            "type": "row"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {},
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 0,
+                "y": 10
+            },
+            "id": 5,
+            "targets": [
+                {
+                    "expr": "metric1{database=\"augur\"}",
+                    "legendFormat": "metric1 (Gauge)",
+                    "refId": "A"
+                }
+            ],
+            "title": "metric1 (A Sample Gauge)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {},
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 6,
+                "y": 10
+            },
+            "id": 6,
+            "targets": [
+                {
+                    "expr": "rate(metric2_sum[5m]) / rate(metric2_count[5m])",
+                    "legendFormat": "metric2 Avg Value",
+                    "refId": "A"
+                }
+            ],
+            "title": "metric2 (A Sample Summary) Avg Value (5m)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {},
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 12,
+                "y": 10
+            },
+            "id": 7,
+            "targets": [
+                {
+                    "expr": "histogram_quantile(0.99, sum(rate(metric3_bucket[5m])) by (le))",
+                    "legendFormat": "metric3 P99 Value",
+                    "refId": "A"
+                }
+            ],
+            "title": "metric3 (A Sample Histogram) P99 Value (5m)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {},
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 18,
+                "y": 10
+            },
+            "id": 8,
+            "targets": [
+                {
+                    "expr": "rate(metric3_bucket[5m])",
+                    "legendFormat": "metric3 {{le}}",
+                    "refId": "A"
+                }
+            ],
+            "title": "metric3 Distribution Heatmap",
+            "type": "heatmap"
+        }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 38,
+    "style": "dark",
+    "tags": [
+        "augur",
+        "database",
+        "prometheus"
+    ],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-30m",
+        "to": "now"
+    },
+    "timepicker": {
+        "refresh_intervals": [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m"
+        ]
+    },
+    "timezone": "",
+    "title": "Database Augur Metrics Overview",
+    "uid": "augur-db-metrics",
+    "version": 1
+}
