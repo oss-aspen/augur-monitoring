@@ -35,5 +35,19 @@ services:
     extra_hosts:
       - "host.containers.internal:host-gateway"
 
+  prometheus-sql:
+    image: ghcr.io/albertodonato/query-exporter:3.2.1
+    # ports:
+    #   - 9560:9560
+    environment:
+      AUGUR_DSN: "postgresql+psycopg2://${AUGUR_DB_USER:-augur}:${AUGUR_DB_PASSWORD:-augur}@${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${AUGUR_DATABASE:-augur}?sslmode=disable"
+    command:
+      - --config
+      - /etc/query-exporter/config.yaml
+    volumes:
+      - ./query_exporter.yml:/etc/query-exporter/config.yaml
+    extra_hosts:
+      - "host.containers.internal:host-gateway"
+
 volumes:
   prometheus_data:

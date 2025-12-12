@@ -1,0 +1,40 @@
+databases:
+  augur:
+    dsn: !env AUGUR_DSN
+    # user: !env AUGUR_DB_USER
+    # password: !env AUGUR_DB_PASSWORD
+
+metrics:
+  metric1:
+    type: gauge
+    description: A sample gauge
+  metric2:
+    type: summary
+    description: A sample summary
+    labels: [l1, l2]
+    expiration: 24h
+  metric3:
+    type: histogram
+    description: A sample histogram
+    buckets: [10, 20, 50, 100, 1000]
+  metric4:
+    type: enum
+    description: A sample enum
+    states: [foo, bar, baz]
+
+queries:
+  query1:
+    interval: 5
+    databases: [augur]
+    metrics: [metric1]
+    sql: SELECT random() / 1000000000000000 AS metric1
+  query2:
+    interval: 20
+    timeout: 0.5
+    databases: [augur]
+    metrics: [metric2, metric3]
+    sql: |
+      SELECT abs(random() / 1000000000000000) AS metric2,
+             abs(random() / 10000000000000000) AS metric3,
+             "value1" AS l1,
+             "value2" AS l2
