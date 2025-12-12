@@ -1,337 +1,718 @@
 {
-    "title": "Database/Augur Metrics Dashboard",
-    "uid": "database-augur-metrics",
-    "templating": {
+    "annotations": {
         "list": [
             {
-                "name": "datasource",
-                "type": "datasource",
-                "query": "prometheus",
-                "current": {
-                    "value": "Prometheus"
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
                 },
-                "hide": 0,
-                "label": "Data Source",
-                "refresh": 1
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
             }
         ]
     },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 3,
+    "links": [],
     "panels": [
         {
-            "title": "Database Error Rate",
-            "type": "stat",
-            "gridPos": {
-                "x": 0,
-                "y": 0,
-                "h": 4,
-                "w": 4
+            "datasource": {
+                "uid": "${datasource}"
             },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 0,
+                "y": 0
+            },
+            "id": 3,
+            "options": {
+                "displayMode": "lcd",
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false,
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_core_repos_success_count",
+                    "legendFormat": "Success",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_core_repos_pending_count",
+                    "legendFormat": "Pending",
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_core_repos_error_count",
+                    "legendFormat": "Error",
+                    "refId": "C"
+                }
+            ],
+            "title": "Core Collection Status",
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "uid": "${datasource}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 6,
+                "y": 0
+            },
+            "id": 4,
+            "options": {
+                "displayMode": "lcd",
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false,
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_secondary_repos_success_count",
+                    "legendFormat": "Success",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_secondary_repos_pending_count",
+                    "legendFormat": "Pending",
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_secondary_repos_error_count",
+                    "legendFormat": "Error",
+                    "refId": "C"
+                }
+            ],
+            "title": "Secondary Collection Status",
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "uid": "${datasource}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 11,
+                "y": 0
+            },
+            "id": 5,
+            "options": {
+                "displayMode": "lcd",
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false,
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "color"
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_facade_repos_success_count",
+                    "legendFormat": "Success",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_facade_repos_pending_count",
+                    "legendFormat": "Pending",
+                    "refId": "B"
+                },
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "augur_facade_repos_error_count",
+                    "legendFormat": "Error",
+                    "refId": "C"
+                }
+            ],
+            "title": "Facade Collection Status",
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "uid": "${datasource}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "s"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 7,
+                "w": 8,
+                "x": 16,
+                "y": 0
+            },
+            "id": 8,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "show": true,
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "histogram_quantile(0.50, sum(rate(query_latency_bucket[5m])) by (le, query))",
+                    "legendFormat": "{{query}} P50",
+                    "refId": "A"
+                },
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "histogram_quantile(0.90, sum(rate(query_latency_bucket[5m])) by (le, query))",
+                    "legendFormat": "{{query}} P90",
+                    "refId": "B"
+                }
+            ],
+            "title": "Query Latency (P50/P90)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "uid": "${datasource}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 1
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 4,
+                "x": 0,
+                "y": 4
+            },
+            "id": 1,
             "options": {
                 "colorMode": "value",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "orientation": "auto",
-                "textMode": "value",
+                "percentChangeColorMode": "standard",
                 "reduceOptions": {
                     "calcs": [
                         "rate"
-                    ]
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value",
+                "wideLayout": true
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "rate(database_errors_total[5m])",
+                    "refId": "A"
                 }
+            ],
+            "title": "Database Error Rate",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
-                    "unit": "short",
                     "decimals": 2,
-                    "color": {
-                        "mode": "thresholds"
-                    },
+                    "mappings": [],
                     "thresholds": {
                         "mode": "absolute",
                         "steps": [
                             {
-                                "value": null,
-                                "color": "green"
+                                "color": "green",
+                                "value": 0
                             },
                             {
-                                "value": 1,
-                                "color": "red"
+                                "color": "red",
+                                "value": 80
                             }
                         ]
-                    }
-                }
+                    },
+                    "unit": "queries/sec"
+                },
+                "overrides": []
             },
-            "targets": [
-                {
-                    "expr": "rate(database_errors_total[5m])",
-                    "refId": "A",
-                    "datasource": "${datasource}"
-                }
-            ]
-        },
-        {
-            "title": "Total Query Rate",
-            "type": "stat",
             "gridPos": {
-                "x": 4,
-                "y": 0,
                 "h": 4,
-                "w": 4
+                "w": 4,
+                "x": 4,
+                "y": 4
             },
+            "id": 2,
             "options": {
                 "colorMode": "none",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "orientation": "auto",
-                "textMode": "value",
+                "percentChangeColorMode": "standard",
                 "reduceOptions": {
                     "calcs": [
                         "rate"
-                    ]
-                }
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value",
+                "wideLayout": true
             },
-            "fieldConfig": {
-                "defaults": {
-                    "unit": "queries/sec",
-                    "decimals": 2
-                }
-            },
+            "pluginVersion": "12.1.1",
             "targets": [
                 {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
                     "expr": "sum(rate(queries_total[5m]))",
                     "legendFormat": "Total QPS",
-                    "refId": "A",
-                    "datasource": "${datasource}"
+                    "refId": "A"
                 }
-            ]
+            ],
+            "title": "Total Query Rate",
+            "type": "stat"
         },
         {
-            "title": "Core Collection Status",
-            "type": "bargauge",
+            "datasource": {
+                "uid": "${datasource}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "queries/sec"
+                },
+                "overrides": []
+            },
             "gridPos": {
+                "h": 9,
+                "w": 8,
                 "x": 8,
-                "y": 0,
-                "h": 4,
-                "w": 4
+                "y": 4
             },
-            "options": {
-                "displayMode": "lcd",
-                "orientation": "auto",
-                "showThresholdLabels": false,
-                "showThresholdMarkers": false
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "unit": "short",
-                    "mappings": [],
-                    "color": {
-                        "mode": "palette-classic"
-                    }
-                }
-            },
-            "targets": [
-                {
-                    "expr": "augur_core_repos_success_count",
-                    "legendFormat": "Success",
-                    "refId": "A",
-                    "datasource": "${datasource}"
-                },
-                {
-                    "expr": "augur_core_repos_pending_count",
-                    "legendFormat": "Pending",
-                    "refId": "B",
-                    "datasource": "${datasource}"
-                },
-                {
-                    "expr": "augur_core_repos_error_count",
-                    "legendFormat": "Error",
-                    "refId": "C",
-                    "datasource": "${datasource}"
-                }
-            ]
-        },
-        {
-            "title": "Secondary Collection Status",
-            "type": "bargauge",
-            "gridPos": {
-                "x": 0,
-                "y": 4,
-                "h": 4,
-                "w": 4
-            },
-            "options": {
-                "displayMode": "lcd",
-                "orientation": "auto",
-                "showThresholdLabels": false,
-                "showThresholdMarkers": false
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "unit": "short",
-                    "mappings": [],
-                    "color": {
-                        "mode": "palette-classic"
-                    }
-                }
-            },
-            "targets": [
-                {
-                    "expr": "augur_secondary_repos_success_count",
-                    "legendFormat": "Success",
-                    "refId": "A",
-                    "datasource": "${datasource}"
-                },
-                {
-                    "expr": "augur_secondary_repos_pending_count",
-                    "legendFormat": "Pending",
-                    "refId": "B",
-                    "datasource": "${datasource}"
-                },
-                {
-                    "expr": "augur_secondary_repos_error_count",
-                    "legendFormat": "Error",
-                    "refId": "C",
-                    "datasource": "${datasource}"
-                }
-            ]
-        },
-        {
-            "title": "Facade Collection Status",
-            "type": "bargauge",
-            "gridPos": {
-                "x": 4,
-                "y": 4,
-                "h": 4,
-                "w": 4
-            },
-            "options": {
-                "displayMode": "lcd",
-                "orientation": "auto",
-                "showThresholdLabels": false,
-                "showThresholdMarkers": false
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "unit": "short",
-                    "mappings": [],
-                    "color": {
-                        "mode": "palette-classic"
-                    }
-                }
-            },
-            "targets": [
-                {
-                    "expr": "augur_facade_repos_success_count",
-                    "legendFormat": "Success",
-                    "refId": "A",
-                    "datasource": "${datasource}"
-                },
-                {
-                    "expr": "augur_facade_repos_pending_count",
-                    "legendFormat": "Pending",
-                    "refId": "B",
-                    "datasource": "${datasource}"
-                },
-                {
-                    "expr": "augur_facade_repos_error_count",
-                    "legendFormat": "Error",
-                    "refId": "C",
-                    "datasource": "${datasource}"
-                }
-            ]
-        },
-        {
-            "title": "Query Latency Heatmap",
-            "type": "heatmap",
-            "gridPos": {
-                "x": 8,
-                "y": 4,
-                "h": 8,
-                "w": 4
-            },
-            "options": {
-                "ySplit": "query"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "unit": "s"
-                }
-            },
-            "targets": [
-                {
-                    "expr": "sum(rate(query_latency_bucket[5m])) by (le, query)",
-                    "legendFormat": "{{query}} le={{le}}",
-                    "refId": "A",
-                    "datasource": "${datasource}"
-                }
-            ]
-        },
-        {
-            "title": "Queries Per Second (QPS) by Query Type",
-            "type": "timeseries",
-            "gridPos": {
-                "x": 0,
-                "y": 8,
-                "h": 8,
-                "w": 6
-            },
+            "id": 7,
             "options": {
                 "legend": {
-                    "show": true
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "show": true,
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
                 }
             },
-            "fieldConfig": {
-                "defaults": {
-                    "unit": "queries/sec",
-                    "custom": {
-                        "drawStyle": "line"
-                    }
-                }
-            },
+            "pluginVersion": "12.1.1",
             "targets": [
                 {
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
                     "expr": "sum(rate(queries_total{status=\"success\"}[5m])) by (query)",
                     "legendFormat": "{{query}}",
-                    "refId": "A",
-                    "datasource": "${datasource}"
+                    "refId": "A"
                 }
-            ]
+            ],
+            "title": "Queries Per Second (QPS) by Query Type",
+            "type": "timeseries"
         },
         {
-            "title": "Query Latency (P50/P90)",
-            "type": "timeseries",
-            "gridPos": {
-                "x": 6,
-                "y": 8,
-                "h": 8,
-                "w": 6
-            },
-            "options": {
-                "legend": {
-                    "show": true
-                }
+            "datasource": {
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
-                    "unit": "s",
                     "custom": {
-                        "drawStyle": "line"
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "scaleDistribution": {
+                            "type": "linear"
+                        }
                     }
-                }
+                },
+                "overrides": []
             },
+            "gridPos": {
+                "h": 17,
+                "w": 6,
+                "x": 18,
+                "y": 7
+            },
+            "id": 6,
+            "options": {
+                "calculate": false,
+                "cellGap": 1,
+                "color": {
+                    "exponent": 0.5,
+                    "fill": "dark-orange",
+                    "mode": "scheme",
+                    "reverse": false,
+                    "scale": "exponential",
+                    "scheme": "Oranges",
+                    "steps": 64
+                },
+                "exemplars": {
+                    "color": "rgba(255,0,255,0.7)"
+                },
+                "filterValues": {
+                    "le": 1e-9
+                },
+                "legend": {
+                    "show": true
+                },
+                "rowsFrame": {
+                    "layout": "auto"
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "showColorScale": false,
+                    "yHistogram": false
+                },
+                "yAxis": {
+                    "axisPlacement": "left",
+                    "reverse": false
+                },
+                "ySplit": "query"
+            },
+            "pluginVersion": "12.1.1",
             "targets": [
                 {
-                    "expr": "histogram_quantile(0.50, sum(rate(query_latency_bucket[5m])) by (le, query))",
-                    "legendFormat": "{{query}} P50",
-                    "refId": "A",
-                    "datasource": "${datasource}"
-                },
-                {
-                    "expr": "histogram_quantile(0.90, sum(rate(query_latency_bucket[5m])) by (le, query))",
-                    "legendFormat": "{{query}} P90",
-                    "refId": "B",
-                    "datasource": "${datasource}"
+                    "datasource": {
+                        "uid": "${datasource}"
+                    },
+                    "expr": "sum(rate(query_latency_bucket[5m])) by (le, query)",
+                    "legendFormat": "{{query}} le={{le}}",
+                    "refId": "A"
                 }
-            ]
+            ],
+            "title": "Query Latency Heatmap",
+            "type": "heatmap"
         }
-    ]
+    ],
+    "preload": false,
+    "schemaVersion": 41,
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "current": {
+                    "value": "Prometheus"
+                },
+                "label": "Data Source",
+                "name": "datasource",
+                "query": "prometheus",
+                "refresh": 1,
+                "type": "datasource"
+            }
+        ]
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Database/Augur Metrics Dashboard",
+    "uid": "database-augur-metrics",
+    "version": 1
 }
