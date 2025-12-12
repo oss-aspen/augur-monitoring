@@ -1,254 +1,337 @@
 {
-    "annotations": {
+    "title": "Database/Augur Metrics Dashboard",
+    "uid": "database-augur-metrics",
+    "templating": {
         "list": [
             {
-                "builtIn": 1,
-                "datasource": {
-                    "type": "datasource",
-                    "uid": "augur_prometheus_01"
+                "name": "datasource",
+                "type": "datasource",
+                "query": "prometheus",
+                "current": {
+                    "value": "Prometheus"
                 },
-                "enable": true,
-                "hide": true,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "target": {
-                    "limit": 100,
-                    "matchAny": false,
-                    "tags": [],
-                    "type": "dashboard"
-                },
-                "type": "dashboard"
+                "hide": 0,
+                "label": "Data Source",
+                "refresh": 1
             }
         ]
     },
-    "editable": true,
-    "gnetId": null,
-    "graphTooltip": 1,
-    "id": null,
-    "links": [],
     "panels": [
         {
-            "datasource": null,
-            "gridPos": {
-                "h": 4,
-                "w": 4,
-                "x": 0,
-                "y": 0
-            },
-            "id": 1,
+            "title": "Database Error Rate",
             "type": "stat",
-            "title": "Core Collection Errors",
-            "targets": [
-                {
-                    "expr": "augur_core_repos_error_count",
-                    "legendFormat": "Core Errors"
-                }
-            ],
+            "gridPos": {
+                "x": 0,
+                "y": 0,
+                "h": 4,
+                "w": 4
+            },
             "options": {
                 "colorMode": "value",
                 "graphMode": "none",
                 "justifyMode": "auto",
+                "orientation": "auto",
                 "textMode": "value",
-                "thresholds": [
-                    {
-                        "color": "green",
-                        "value": null
+                "reduceOptions": {
+                    "calcs": [
+                        "rate"
+                    ]
+                }
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "short",
+                    "decimals": 2,
+                    "color": {
+                        "mode": "thresholds"
                     },
-                    {
-                        "color": "red",
-                        "value": 1
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "value": null,
+                                "color": "green"
+                            },
+                            {
+                                "value": 1,
+                                "color": "red"
+                            }
+                        ]
                     }
-                ]
-            }
+                }
+            },
+            "targets": [
+                {
+                    "expr": "rate(database_errors_total[5m])",
+                    "refId": "A",
+                    "datasource": "${datasource}"
+                }
+            ]
         },
         {
-            "datasource": null,
+            "title": "Total Query Rate",
+            "type": "stat",
             "gridPos": {
-                "h": 4,
-                "w": 4,
                 "x": 4,
-                "y": 0
-            },
-            "id": 2,
-            "type": "stat",
-            "title": "Secondary Collection Errors",
-            "targets": [
-                {
-                    "expr": "augur_secondary_repos_error_count",
-                    "legendFormat": "Secondary Errors"
-                }
-            ],
-            "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "textMode": "value",
-                "thresholds": [
-                    {
-                        "color": "green",
-                        "value": null
-                    },
-                    {
-                        "color": "red",
-                        "value": 1
-                    }
-                ]
-            }
-        },
-        {
-            "datasource": null,
-            "gridPos": {
+                "y": 0,
                 "h": 4,
-                "w": 4,
-                "x": 8,
-                "y": 0
+                "w": 4
             },
-            "id": 3,
-            "type": "stat",
-            "title": "Facade Collection Errors",
-            "targets": [
-                {
-                    "expr": "augur_facade_repos_error_count",
-                    "legendFormat": "Facade Errors"
-                }
-            ],
             "options": {
-                "colorMode": "value",
+                "colorMode": "none",
                 "graphMode": "none",
                 "justifyMode": "auto",
+                "orientation": "auto",
                 "textMode": "value",
-                "thresholds": [
-                    {
-                        "color": "green",
-                        "value": null
-                    },
-                    {
-                        "color": "red",
-                        "value": 1
-                    }
-                ]
-            }
-        },
-        {
-            "datasource": null,
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 4
+                "reduceOptions": {
+                    "calcs": [
+                        "rate"
+                    ]
+                }
             },
-            "id": 4,
-            "title": "Active Collection Tasks Over Time",
-            "type": "timeseries",
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "queries/sec",
+                    "decimals": 2
+                }
+            },
             "targets": [
                 {
-                    "expr": "augur_repos_currently_collecting",
-                    "legendFormat": "{{collection_stage}}",
-                    "refId": "A"
+                    "expr": "sum(rate(queries_total[5m]))",
+                    "legendFormat": "Total QPS",
+                    "refId": "A",
+                    "datasource": "${datasource}"
                 }
-            ],
-            "options": {
-                "tooltip": {
-                    "mode": "single",
-                    "sort": "none"
-                }
-            }
+            ]
         },
         {
-            "datasource": null,
+            "title": "Core Collection Status",
+            "type": "bargauge",
             "gridPos": {
-                "h": 8,
-                "w": 6,
-                "x": 0,
-                "y": 12
+                "x": 8,
+                "y": 0,
+                "h": 4,
+                "w": 4
             },
-            "id": 5,
-            "title": "Core Collection Status Breakdown",
-            "type": "barchart",
+            "options": {
+                "displayMode": "lcd",
+                "orientation": "auto",
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "short",
+                    "mappings": [],
+                    "color": {
+                        "mode": "palette-classic"
+                    }
+                }
+            },
             "targets": [
                 {
                     "expr": "augur_core_repos_success_count",
                     "legendFormat": "Success",
-                    "refId": "A"
+                    "refId": "A",
+                    "datasource": "${datasource}"
                 },
                 {
                     "expr": "augur_core_repos_pending_count",
                     "legendFormat": "Pending",
-                    "refId": "B"
+                    "refId": "B",
+                    "datasource": "${datasource}"
                 },
                 {
                     "expr": "augur_core_repos_error_count",
                     "legendFormat": "Error",
-                    "refId": "C"
+                    "refId": "C",
+                    "datasource": "${datasource}"
                 }
-            ],
-            "options": {
-                "legend": {
-                    "displayMode": "list",
-                    "placement": "right"
-                },
-                "orientation": "horizontal"
-            }
+            ]
         },
         {
-            "datasource": null,
+            "title": "Secondary Collection Status",
+            "type": "bargauge",
             "gridPos": {
-                "h": 8,
-                "w": 6,
-                "x": 6,
-                "y": 12
+                "x": 0,
+                "y": 4,
+                "h": 4,
+                "w": 4
             },
-            "id": 6,
-            "title": "Secondary Collection Status Breakdown",
-            "type": "barchart",
+            "options": {
+                "displayMode": "lcd",
+                "orientation": "auto",
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "short",
+                    "mappings": [],
+                    "color": {
+                        "mode": "palette-classic"
+                    }
+                }
+            },
             "targets": [
                 {
                     "expr": "augur_secondary_repos_success_count",
                     "legendFormat": "Success",
-                    "refId": "A"
+                    "refId": "A",
+                    "datasource": "${datasource}"
                 },
                 {
                     "expr": "augur_secondary_repos_pending_count",
                     "legendFormat": "Pending",
-                    "refId": "B"
+                    "refId": "B",
+                    "datasource": "${datasource}"
                 },
                 {
                     "expr": "augur_secondary_repos_error_count",
                     "legendFormat": "Error",
-                    "refId": "C"
+                    "refId": "C",
+                    "datasource": "${datasource}"
+                }
+            ]
+        },
+        {
+            "title": "Facade Collection Status",
+            "type": "bargauge",
+            "gridPos": {
+                "x": 4,
+                "y": 4,
+                "h": 4,
+                "w": 4
+            },
+            "options": {
+                "displayMode": "lcd",
+                "orientation": "auto",
+                "showThresholdLabels": false,
+                "showThresholdMarkers": false
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "short",
+                    "mappings": [],
+                    "color": {
+                        "mode": "palette-classic"
+                    }
+                }
+            },
+            "targets": [
+                {
+                    "expr": "augur_facade_repos_success_count",
+                    "legendFormat": "Success",
+                    "refId": "A",
+                    "datasource": "${datasource}"
                 },
                 {
-                    "expr": "augur_secondary_repos_never_collected_count",
-                    "legendFormat": "Never Collected (Backlog)",
-                    "refId": "D"
+                    "expr": "augur_facade_repos_pending_count",
+                    "legendFormat": "Pending",
+                    "refId": "B",
+                    "datasource": "${datasource}"
+                },
+                {
+                    "expr": "augur_facade_repos_error_count",
+                    "legendFormat": "Error",
+                    "refId": "C",
+                    "datasource": "${datasource}"
                 }
-            ],
+            ]
+        },
+        {
+            "title": "Query Latency Heatmap",
+            "type": "heatmap",
+            "gridPos": {
+                "x": 8,
+                "y": 4,
+                "h": 8,
+                "w": 4
+            },
+            "options": {
+                "ySplit": "query"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "s"
+                }
+            },
+            "targets": [
+                {
+                    "expr": "sum(rate(query_latency_bucket[5m])) by (le, query)",
+                    "legendFormat": "{{query}} le={{le}}",
+                    "refId": "A",
+                    "datasource": "${datasource}"
+                }
+            ]
+        },
+        {
+            "title": "Queries Per Second (QPS) by Query Type",
+            "type": "timeseries",
+            "gridPos": {
+                "x": 0,
+                "y": 8,
+                "h": 8,
+                "w": 6
+            },
             "options": {
                 "legend": {
-                    "displayMode": "list",
-                    "placement": "right"
+                    "show": true
+                }
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "queries/sec",
+                    "custom": {
+                        "drawStyle": "line"
+                    }
+                }
+            },
+            "targets": [
+                {
+                    "expr": "sum(rate(queries_total{status=\"success\"}[5m])) by (query)",
+                    "legendFormat": "{{query}}",
+                    "refId": "A",
+                    "datasource": "${datasource}"
+                }
+            ]
+        },
+        {
+            "title": "Query Latency (P50/P90)",
+            "type": "timeseries",
+            "gridPos": {
+                "x": 6,
+                "y": 8,
+                "h": 8,
+                "w": 6
+            },
+            "options": {
+                "legend": {
+                    "show": true
+                }
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "unit": "s",
+                    "custom": {
+                        "drawStyle": "line"
+                    }
+                }
+            },
+            "targets": [
+                {
+                    "expr": "histogram_quantile(0.50, sum(rate(query_latency_bucket[5m])) by (le, query))",
+                    "legendFormat": "{{query}} P50",
+                    "refId": "A",
+                    "datasource": "${datasource}"
                 },
-                "orientation": "horizontal"
-            }
+                {
+                    "expr": "histogram_quantile(0.90, sum(rate(query_latency_bucket[5m])) by (le, query))",
+                    "legendFormat": "{{query}} P90",
+                    "refId": "B",
+                    "datasource": "${datasource}"
+                }
+            ]
         }
-    ],
-    "refresh": "5s",
-    "schemaVersion": 38,
-    "style": "dark",
-    "tags": [
-        "augur",
-        "collection"
-    ],
-    "templating": {
-        "list": []
-    },
-    "time": {
-        "from": "now-6h",
-        "to": "now"
-    },
-    "timepicker": {},
-    "timezone": "",
-    "title": "Augur Collection Monitoring",
-    "uid": "augur-collection-status",
-    "version": 1
+    ]
 }
