@@ -123,6 +123,8 @@ queries:
           COUNT(*) AS augur_collected_recently_counts
       FROM
           augur_operations.collection_status
+      WHERE
+          core_status != 'Ignore'
       GROUP BY
         days_ago
       UNION all
@@ -132,6 +134,8 @@ queries:
           COUNT(*) AS augur_collected_recently_counts
       FROM
           augur_operations.collection_status
+      WHERE
+          core_status != 'Ignore'
       GROUP BY
         days_ago
       UNION all
@@ -141,6 +145,8 @@ queries:
           COUNT(*) AS augur_collected_recently_counts
       FROM
           augur_operations.collection_status
+      WHERE
+          core_status != 'Ignore'
       GROUP BY
         days_ago
       ORDER BY
