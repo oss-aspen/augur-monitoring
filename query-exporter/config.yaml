@@ -32,29 +32,29 @@ queries:
           collection_state,
           COALESCE(count, 0) AS augur_collection_status_counts
       FROM (
-          SELECT 'core' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success']) AS collection_state
+          SELECT 'core' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success', 'Ignore']) AS collection_state
           UNION ALL
-          SELECT 'secondary' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success']) AS collection_state
+          SELECT 'secondary' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success', 'Ignore']) AS collection_state
           UNION ALL
-          SELECT 'facade' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success']) AS collection_state
+          SELECT 'facade' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success', 'Ignore']) AS collection_state
       ) AS status_combinations
       LEFT JOIN (
           SELECT
               'core' AS collection_phase, core_status AS collection_state, COUNT(*) as count
           FROM augur_operations.collection_status
-          WHERE core_status IN ('Pending', 'Error', 'Success')
+          WHERE core_status IN ('Pending', 'Error', 'Success', 'Ignore')
           GROUP BY 1, 2
           UNION ALL
           SELECT
               'secondary' AS collection_phase, secondary_status AS collection_state, COUNT(*) as count
           FROM augur_operations.collection_status
-          WHERE secondary_status IN ('Pending', 'Error', 'Success')
+          WHERE secondary_status IN ('Pending', 'Error', 'Success', 'Ignore')
           GROUP BY 1, 2
           UNION ALL
           SELECT
               'facade' AS collection_phase, facade_status AS collection_state, COUNT(*) as count 
           FROM augur_operations.collection_status
-          WHERE facade_status IN ('Pending', 'Error', 'Success')
+          WHERE facade_status IN ('Pending', 'Error', 'Success', 'Ignore')
           GROUP BY 1, 2
       ) AS actual_counts
       USING (collection_phase, collection_state)
