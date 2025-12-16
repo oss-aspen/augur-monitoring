@@ -13,8 +13,7 @@ datasources:
   - name: Augur Postgres
     uid: augur_postgres_01
     type: postgres
-    # AUGUR_POSTGRES_HOST
-    url: host.containers.internal:${AUGUR_POSTGRES_PORT}
+    url: ${AUGUR_POSTGRES_HOST}:${AUGUR_POSTGRES_PORT}
     user: ${AUGUR_POSTGRES_USER}
     secureJsonData:
       password: ${AUGUR_POSTGRES_PASS}
