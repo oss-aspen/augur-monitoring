@@ -750,7 +750,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Augur Data Collection Status (Revised)",
-    "uid": "augur-collection-status-revised",
+    "title": "Augur Data Collection Status",
+    "uid": "augur-collection-status",
     "version": 2
 }
