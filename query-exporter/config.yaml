@@ -26,7 +26,7 @@ metrics:
 
 queries:
   collection_status_counts:
-    interval: 30
+    interval: 30s
     databases: [augur]
     metrics: [augur_collection_status_counts]
     sql: |
@@ -63,7 +63,7 @@ queries:
       USING (collection_phase, collection_state)
       ORDER BY collection_phase, collection_state;
   never_collected_counts:
-    interval: 30
+    interval: 30s
     databases: [augur]
     metrics: [augur_never_collected_counts]
     sql: |
@@ -96,7 +96,7 @@ queries:
       USING (collection_phase)
       ORDER BY collection_phase;
   total:
-    interval: 30
+    interval: 30s
     databases: [augur]
     metrics: [augur_collection_status_total]
     sql: |
@@ -105,7 +105,7 @@ queries:
       FROM augur_operations.collection_status
       WHERE facade_status != 'Ignore'
   full_total:
-    interval: 30
+    interval: 30s
     databases: [augur]
     metrics: [augur_collection_status_full_total]
     sql: |
@@ -113,7 +113,7 @@ queries:
         COUNT(*) AS augur_collection_status_full_total
       FROM augur_operations.collection_status
   recency_check:
-    interval: 300 # Less frequent check
+    interval: 60s
     databases: [augur]
     metrics: [augur_collected_recently_counts]
     sql: |
