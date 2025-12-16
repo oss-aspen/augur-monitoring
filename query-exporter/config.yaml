@@ -19,9 +19,10 @@ metrics:
     type: gauge
     labels: [collection_phase]
     description: Number of repositories in each different state for each phase of collection that have never had collection.
-  augur_core_collected_recently_count:
+  augur_collected_recently_counts:
     type: gauge
-    description: Count of repos where core data was collected after a recent threshold (e.g., last 30 days).
+    labels: [collection_phase, days_ago]
+    description: Number of repositories with last collected dates for each phase of collection across the past 30 days
 
 queries:
   collection_status_counts:
@@ -114,8 +115,33 @@ queries:
   recency_check:
     interval: 300 # Less frequent check
     databases: [augur]
-    metrics: [augur_core_collected_recently_count]
+    metrics: [augur_collected_recently_counts]
     sql: |
-      SELECT COUNT(*) AS augur_core_collected_recently_count
-      FROM augur_operations.collection_status
-      WHERE core_data_last_collected > now() - interval '30 day'; -- Using a rolling window
+      select
+        'core' as collection_phase,
+          EXTRACT(DAY from date_trunc('day', current_date - core_data_last_collected)) AS days_ago,
+          COUNT(*) AS augur_collected_recently_counts
+      FROM
+          augur_operations.collection_status
+      GROUP BY
+        days_ago
+      UNION all
+      select
+        'secondary' as collection_phase,
+          EXTRACT(DAY from date_trunc('day', current_date - secondary_data_last_collected)) AS days_ago,
+          COUNT(*) AS augur_collected_recently_counts
+      FROM
+          augur_operations.collection_status
+      GROUP BY
+        days_ago
+      UNION all
+      select
+        'facade' as collection_phase,
+          EXTRACT(DAY from date_trunc('day', current_date - facade_data_last_collected)) AS days_ago,
+          COUNT(*) AS augur_collected_recently_counts
+      FROM
+          augur_operations.collection_status
+      GROUP BY
+        days_ago
+      ORDER BY
+          days_ago;
