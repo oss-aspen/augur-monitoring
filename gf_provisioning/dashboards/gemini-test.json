@@ -4,8 +4,8 @@
             {
                 "builtIn": 1,
                 "datasource": {
-                    "type": "prometheus",
-                    "uid": "augur_prometheus_01"
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
                 },
                 "enable": true,
                 "hide": true,
@@ -14,6 +14,10 @@
                 "type": "dashboard"
             },
             {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "augur_prometheus_01"
+                },
                 "enable": false,
                 "hide": false
             }
@@ -26,7 +30,10 @@
     "links": [],
     "panels": [
         {
-            "datasource": null,
+            "datasource": {
+                "type": "prometheus",
+                "uid": "augur_prometheus_01"
+            },
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -101,7 +108,10 @@
             "type": "stat"
         },
         {
-            "datasource": null,
+            "datasource": {
+                "type": "prometheus",
+                "uid": "augur_prometheus_01"
+            },
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -210,7 +220,10 @@
             "type": "bargauge"
         },
         {
-            "datasource": null,
+            "datasource": {
+                "type": "prometheus",
+                "uid": "augur_prometheus_01"
+            },
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -319,7 +332,10 @@
             "type": "bargauge"
         },
         {
-            "datasource": null,
+            "datasource": {
+                "type": "prometheus",
+                "uid": "augur_prometheus_01"
+            },
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -428,7 +444,10 @@
             "type": "bargauge"
         },
         {
-            "datasource": null,
+            "datasource": {
+                "type": "prometheus",
+                "uid": "augur_prometheus_01"
+            },
             "description": "Tracks the total number of repositories that have been collected within the last ${recent_days} days, broken down by collection phase.",
             "fieldConfig": {
                 "defaults": {
