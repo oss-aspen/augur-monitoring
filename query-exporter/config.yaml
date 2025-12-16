@@ -23,6 +23,10 @@ metrics:
     type: gauge
     labels: [collection_phase, days_ago]
     description: Number of repositories with last collected dates for each phase of collection across the past 30 days
+  augur_14d_counts:
+    type: gauge
+    labels: [collection_phase]
+    description: Total number of repositories with last collected dates for each phase of collection less than 14 days ago
 
 queries:
   collection_status_counts:
@@ -151,3 +155,28 @@ queries:
         days_ago
       ORDER BY
           days_ago;
+  recency_14d:
+    interval: 60s
+    databases: [augur]
+    metrics: [augur_14d_counts]
+    sql: |
+      select
+        'core' as collection_phase,
+          COUNT(*) AS augur_14d_counts
+      FROM
+          augur_operations.collection_status
+      WHERE core_data_last_collected > (CURRENT_DATE - interval '14 days') AND core_status != 'Ignore'
+      UNION all
+      select
+        'secondary' as collection_phase,
+          COUNT(*) AS augur_14d_counts
+      FROM
+          augur_operations.collection_status
+      WHERE secondary_data_last_collected > (CURRENT_DATE - interval '14 days') AND secondary_status != 'Ignore'
+      UNION all
+      select
+        'facade' as collection_phase,
+          COUNT(*) AS augur_14d_counts
+      FROM
+          augur_operations.collection_status
+      WHERE facade_data_last_collected > (CURRENT_DATE - interval '14 days') AND facade_status != 'Ignore'
