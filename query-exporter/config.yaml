@@ -14,6 +14,9 @@ metrics:
   augur_core_repos_success_count:
     type: gauge
     description: Number of repositories where core collection has succeeded.
+  augur_core_repos_never_collected_count:
+    type: gauge
+    description: Number of repositories where core collection has never run (NULL last collected date).
   augur_secondary_repos_pending_count:
     type: gauge
     description: Number of repositories awaiting secondary collection.
@@ -48,12 +51,13 @@ queries:
   core_status_counts:
     interval: 30
     databases: [augur]
-    metrics: [augur_core_repos_pending_count, augur_core_repos_error_count, augur_core_repos_success_count]
+    metrics: [augur_core_repos_pending_count, augur_core_repos_error_count, augur_core_repos_success_count, augur_core_repos_never_collected_count]
     sql: |
       SELECT
         COUNT(CASE WHEN core_status = 'Pending' THEN 1 END) AS augur_core_repos_pending_count,
         COUNT(CASE WHEN core_status = 'Error' THEN 1 END) AS augur_core_repos_error_count,
-        COUNT(CASE WHEN core_status = 'Success' THEN 1 END) AS augur_core_repos_success_count
+        COUNT(CASE WHEN core_status = 'Success' THEN 1 END) AS augur_core_repos_success_count.
+        COUNT(CASE WHEN core_data_last_collected IS NULL THEN 1 END) AS augur_core_repos_never_collected_count
       FROM augur_operations.collection_status;
   secondary_status_counts:
     interval: 30
