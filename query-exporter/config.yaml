@@ -9,6 +9,12 @@ metrics:
     type: gauge
     labels: [collection_state, collection_phase]
     description: Number of repositories in each different state for each phase of collection.
+  augur_collection_status_total:
+    type: gauge
+    description: Number of total repositories in the collection status table, ignoring repos where facade state is Ignore.
+  augur_collection_status_full_total:
+    type: gauge
+    description: Number of total repositories in the collection status table, including ignored values.
   augur_never_collected_counts:
     type: gauge
     labels: [collection_phase]
@@ -92,6 +98,23 @@ queries:
       ) AS actual_counts
       USING (collection_phase)
       ORDER BY collection_phase;
+  total:
+    interval: 30
+    databases: [augur]
+    metrics: [augur_collection_status_total]
+    sql: |
+      SELECT
+        COUNT(*) AS augur_collection_status_total
+      FROM augur_operations.collection_status
+      WHERE facade_status != 'Ignore'
+  full_total:
+    interval: 30
+    databases: [augur]
+    metrics: [augur_collection_status_full_total]
+    sql: |
+      SELECT
+        COUNT(*) AS augur_collection_status_full_total
+      FROM augur_operations.collection_status
   active_collection:
     interval: 15
     databases: [augur]
