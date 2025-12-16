@@ -32,3 +32,14 @@ Grafana in particular takes a hot sec to start up (probably about a minute) befo
 Data is not currently preserved between restarts of the monitoring stack.
 
 This is intended and designed to run independently of augur (by relying on the ports that the augur docker stack exposes). This makes it possible to take augur down and back up without affecting the monitoring stack other than creating a gap in the graphs where no data could be collected.
+
+
+## Dashboards
+
+In addition to some useful off the shelf dashboards for monitoring things like Celery, Postgres, and the system host, there are also some custom dashboards for monitoring Augur itself using custom queries designed to actually look at the Augur database.
+
+This uses https://github.com/albertodonato/query-exporter to make the results of postgres queries available to prometheus, which checks them periodically and stores the data for grafana to visualize.
+
+Grafana also has a built-in postgres module for making queries that do not need time-series data to be stored by Prometheus. This is useful for one-off things that can just be regularly updated, such as a list of repos currently being processed (coming soon).
+
+
