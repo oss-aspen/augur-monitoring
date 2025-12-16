@@ -1,0 +1,182 @@
+databases:
+  augur:
+    dsn: !env AUGUR_DSN
+    # user: !env AUGUR_DB_USER
+    # password: !env AUGUR_DB_PASSWORD
+
+metrics:
+  augur_collection_status_counts:
+    type: gauge
+    labels: [collection_state, collection_phase]
+    description: Number of repositories in each different state for each phase of collection.
+  augur_collection_status_total:
+    type: gauge
+    description: Number of total repositories in the collection status table, ignoring repos where facade state is Ignore.
+  augur_collection_status_full_total:
+    type: gauge
+    description: Number of total repositories in the collection status table, including ignored values.
+  augur_never_collected_counts:
+    type: gauge
+    labels: [collection_phase]
+    description: Number of repositories in each different state for each phase of collection that have never had collection.
+  augur_collected_recently_counts:
+    type: gauge
+    labels: [collection_phase, days_ago]
+    description: Number of repositories with last collected dates for each phase of collection across the past 30 days
+  augur_14d_counts:
+    type: gauge
+    labels: [collection_phase]
+    description: Total number of repositories with last collected dates for each phase of collection less than 14 days ago
+
+queries:
+  collection_status_counts:
+    interval: 30s
+    databases: [augur]
+    metrics: [augur_collection_status_counts]
+    sql: |
+      SELECT
+          collection_phase,
+          collection_state,
+          COALESCE(count, 0) AS augur_collection_status_counts
+      FROM (
+          SELECT 'core' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success', 'Ignore']) AS collection_state
+          UNION ALL
+          SELECT 'secondary' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success', 'Ignore']) AS collection_state
+          UNION ALL
+          SELECT 'facade' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success', 'Ignore']) AS collection_state
+      ) AS status_combinations
+      LEFT JOIN (
+          SELECT
+              'core' AS collection_phase, core_status AS collection_state, COUNT(*) as count
+          FROM augur_operations.collection_status
+          WHERE core_status IN ('Pending', 'Error', 'Success', 'Ignore')
+          GROUP BY 1, 2
+          UNION ALL
+          SELECT
+              'secondary' AS collection_phase, secondary_status AS collection_state, COUNT(*) as count
+          FROM augur_operations.collection_status
+          WHERE secondary_status IN ('Pending', 'Error', 'Success', 'Ignore')
+          GROUP BY 1, 2
+          UNION ALL
+          SELECT
+              'facade' AS collection_phase, facade_status AS collection_state, COUNT(*) as count 
+          FROM augur_operations.collection_status
+          WHERE facade_status IN ('Pending', 'Error', 'Success', 'Ignore')
+          GROUP BY 1, 2
+      ) AS actual_counts
+      USING (collection_phase, collection_state)
+      ORDER BY collection_phase, collection_state;
+  never_collected_counts:
+    interval: 30s
+    databases: [augur]
+    metrics: [augur_never_collected_counts]
+    sql: |
+      SELECT
+          collection_phase,
+          COALESCE(count, 0) AS augur_never_collected_counts
+      FROM (
+          SELECT 'core' AS collection_phase
+          UNION ALL
+          SELECT 'secondary' AS collection_phase
+          UNION ALL
+          SELECT 'facade' AS collection_phase
+      ) AS status_combinations
+      LEFT JOIN (
+          SELECT
+              'core' AS collection_phase, COUNT(*) as count
+          FROM augur_operations.collection_status
+          WHERE core_data_last_collected IS NULL
+          UNION ALL
+          SELECT
+              'secondary' AS collection_phase, COUNT(*) as count
+          FROM augur_operations.collection_status
+          WHERE secondary_data_last_collected IS NULL
+          UNION ALL
+          SELECT
+              'facade' AS collection_phase, COUNT(*) as count 
+          FROM augur_operations.collection_status
+          WHERE facade_data_last_collected IS NULL
+      ) AS actual_counts
+      USING (collection_phase)
+      ORDER BY collection_phase;
+  total:
+    interval: 30s
+    databases: [augur]
+    metrics: [augur_collection_status_total]
+    sql: |
+      SELECT
+        COUNT(*) AS augur_collection_status_total
+      FROM augur_operations.collection_status
+      WHERE facade_status != 'Ignore'
+  full_total:
+    interval: 30s
+    databases: [augur]
+    metrics: [augur_collection_status_full_total]
+    sql: |
+      SELECT
+        COUNT(*) AS augur_collection_status_full_total
+      FROM augur_operations.collection_status
+  recency_check:
+    interval: 60s
+    databases: [augur]
+    metrics: [augur_collected_recently_counts]
+    sql: |
+      select
+        'core' as collection_phase,
+          EXTRACT(DAY from date_trunc('day', current_date - core_data_last_collected)) AS days_ago,
+          COUNT(*) AS augur_collected_recently_counts
+      FROM
+          augur_operations.collection_status
+      WHERE
+          core_status != 'Ignore'
+      GROUP BY
+        days_ago
+      UNION all
+      select
+        'secondary' as collection_phase,
+          EXTRACT(DAY from date_trunc('day', current_date - secondary_data_last_collected)) AS days_ago,
+          COUNT(*) AS augur_collected_recently_counts
+      FROM
+          augur_operations.collection_status
+      WHERE
+          core_status != 'Ignore'
+      GROUP BY
+        days_ago
+      UNION all
+      select
+        'facade' as collection_phase,
+          EXTRACT(DAY from date_trunc('day', current_date - facade_data_last_collected)) AS days_ago,
+          COUNT(*) AS augur_collected_recently_counts
+      FROM
+          augur_operations.collection_status
+      WHERE
+          core_status != 'Ignore'
+      GROUP BY
+        days_ago
+      ORDER BY
+          days_ago;
+  recency_14d:
+    interval: 60s
+    databases: [augur]
+    metrics: [augur_14d_counts]
+    sql: |
+      select
+        'core' as collection_phase,
+          COUNT(*) AS augur_14d_counts
+      FROM
+          augur_operations.collection_status
+      WHERE core_data_last_collected > (CURRENT_DATE - interval '14 days') AND core_status != 'Ignore'
+      UNION all
+      select
+        'secondary' as collection_phase,
+          COUNT(*) AS augur_14d_counts
+      FROM
+          augur_operations.collection_status
+      WHERE secondary_data_last_collected > (CURRENT_DATE - interval '14 days') AND secondary_status != 'Ignore'
+      UNION all
+      select
+        'facade' as collection_phase,
+          COUNT(*) AS augur_14d_counts
+      FROM
+          augur_operations.collection_status
+      WHERE facade_data_last_collected > (CURRENT_DATE - interval '14 days') AND facade_status != 'Ignore'

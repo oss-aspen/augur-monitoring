@@ -10,3 +10,20 @@ datasources:
     # This is the magic key!
     # Give it a unique, stable string.
     uid: augur_prometheus_01
+  - name: Augur Postgres
+    uid: augur_postgres_01
+    type: postgres
+    # AUGUR_POSTGRES_HOST
+    url: host.containers.internal:${AUGUR_POSTGRES_PORT}
+    user: ${AUGUR_POSTGRES_USER}
+    secureJsonData:
+      password: ${AUGUR_POSTGRES_PASS}
+    jsonData:
+      database: ${AUGUR_POSTGRES_DB}
+      sslmode: "disable" # disable/require/verify-ca/verify-full
+      maxOpenConns: 100
+      maxIdleConns: 100
+      maxIdleConnsAuto: true
+      connMaxLifetime: 14400
+      postgresVersion: 1600 # 903=9.3, 904=9.4, 905=9.5, 906=9.6, 1000=10
+      timescaledb: false
