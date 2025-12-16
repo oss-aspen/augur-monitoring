@@ -19,10 +19,6 @@ metrics:
     type: gauge
     labels: [collection_phase]
     description: Number of repositories in each different state for each phase of collection that have never had collection.
-  augur_repos_currently_collecting:
-    type: gauge
-    description: Number of repositories currently in the 'Collecting' status, categorized by collection stage.
-    labels: [collection_stage]
   augur_core_collected_recently_count:
     type: gauge
     description: Count of repos where core data was collected after a recent threshold (e.g., last 30 days).
@@ -115,22 +111,6 @@ queries:
       SELECT
         COUNT(*) AS augur_collection_status_full_total
       FROM augur_operations.collection_status
-  active_collection:
-    interval: 15
-    databases: [augur]
-    metrics: [augur_repos_currently_collecting]
-    sql: |
-      SELECT 'core' AS collection_stage, COUNT(*) AS augur_repos_currently_collecting
-      FROM augur_operations.collection_status
-      WHERE core_status = 'Collecting'
-      UNION ALL
-      SELECT 'secondary' AS collection_stage, COUNT(*) AS augur_repos_currently_collecting
-      FROM augur_operations.collection_status
-      WHERE secondary_status = 'Collecting'
-      UNION ALL
-      SELECT 'facade' AS collection_stage, COUNT(*) AS augur_repos_currently_collecting
-      FROM augur_operations.collection_status
-      WHERE facade_status = 'Collecting';
   recency_check:
     interval: 300 # Less frequent check
     databases: [augur]
