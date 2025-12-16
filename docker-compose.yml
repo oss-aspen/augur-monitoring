@@ -10,9 +10,15 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-password}
       GF_LOG_LEVEL: error
       DS_PROMETHEUS_AUGUR: Augur Postgres
+      AUGUR_POSTGRES_PORT: ${AUGUR_DB_PORT:-5432}
+      AUGUR_POSTGRES_DB: "${AUGUR_DATABASE:-augur}"
+      AUGUR_POSTGRES_USER: "${AUGUR_DB_USER:-augur}"
+      AUGUR_POSTGRES_PASS: "${AUGUR_DB_PASSWORD:-augur}"
     volumes:
       - ./gf_provisioning/dashboards:/etc/grafana/provisioning/dashboards:z
       - ./gf_provisioning/datasources:/etc/grafana/provisioning/datasources:z
+    extra_hosts:
+      - "host.containers.internal:host-gateway"
 
   prometheus:
     image: prom/prometheus
