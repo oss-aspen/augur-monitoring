@@ -29,6 +29,4 @@ This includes:
 
 Grafana in particular takes a hot sec to start up (probably about a minute) before its accessible via the web interface (it has db migrations to do apparrently - the logs for this should be hidden by the instruction to only show error logs)
 
-Data is not currently preserved between restarts of the monitoring stack.
-
 This is intended and designed to run independently of augur (by relying on the ports that the augur docker stack exposes). This makes it possible to take augur down and back up without affecting the monitoring stack other than creating a gap in the graphs where no data could be collected.
