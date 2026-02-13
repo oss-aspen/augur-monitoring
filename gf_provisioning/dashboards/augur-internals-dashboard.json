@@ -26,7 +26,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 1,
-    "id": 6,
+    "id": 3,
     "links": [],
     "panels": [
         {
@@ -65,7 +65,7 @@
                 ]
             },
             "gridPos": {
-                "h": 5,
+                "h": 4,
                 "w": 3,
                 "x": 0,
                 "y": 0
@@ -109,13 +109,34 @@
         },
         {
             "datasource": {
-                "type": "prometheus",
-                "uid": "augur_prometheus_01"
+                "type": "grafana-postgresql-datasource",
+                "uid": "augur_postgres_01"
             },
             "fieldConfig": {
                 "defaults": {
                     "color": {
                         "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
                     },
                     "mappings": [],
                     "thresholds": {
@@ -130,104 +151,104 @@
                                 "value": 80
                             }
                         ]
-                    },
-                    "unit": "short"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "Success"
-                        },
-                        "properties": [
-                            {
-                                "id": "color",
-                                "value": {
-                                    "fixedColor": "green",
-                                    "mode": "fixed"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "Error"
-                        },
-                        "properties": [
-                            {
-                                "id": "color",
-                                "value": {
-                                    "fixedColor": "red",
-                                    "mode": "fixed"
-                                }
-                            }
-                        ]
                     }
-                ]
+                },
+                "overrides": []
             },
             "gridPos": {
                 "h": 5,
-                "w": 3,
+                "w": 6,
                 "x": 3,
                 "y": 0
             },
-            "id": 7,
+            "id": 13,
             "options": {
-                "displayMode": "lcd",
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
                 "legend": {
                     "calcs": [],
                     "displayMode": "list",
                     "placement": "bottom",
-                    "showLegend": false
+                    "showLegend": true
                 },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
                 "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
                 },
-                "showThresholdLabels": false,
-                "showThresholdMarkers": false,
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
+                "xField": "collection_day",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
             },
             "pluginVersion": "12.1.1",
             "targets": [
                 {
                     "datasource": {
-                        "uid": "${datasource}"
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "augur_postgres_01"
                     },
-                    "disableTextWrap": false,
-                    "editorMode": "builder",
-                    "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"core\"})",
-                    "fullMetaSearch": false,
-                    "includeNullMetadata": true,
-                    "legendFormat": "__auto",
-                    "range": true,
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(core_data_last_collected)) FROM augur_operations.collection_status WHERE core_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days' -- Ensures at least a 14-day window (including today)\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n)\nSELECT \n    dr.collection_day, \n    COUNT(cs.core_data_last_collected) AS core_collections \nFROM \n    date_range dr\nLEFT JOIN \n    augur_operations.collection_status cs \n    ON dr.collection_day = DATE(date_trunc('day', cs.core_data_last_collected))\n    AND cs.core_status != 'Ignore'\nGROUP BY \n    dr.collection_day\nORDER BY \n    dr.collection_day ASC;",
                     "refId": "A",
-                    "useBackend": false
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
                 }
             ],
-            "title": "Core Collection Status",
-            "type": "bargauge"
+            "title": "Core last collection by date",
+            "type": "barchart"
         },
         {
             "datasource": {
-                "type": "prometheus",
-                "uid": "augur_prometheus_01"
+                "type": "grafana-postgresql-datasource",
+                "uid": "augur_postgres_01"
             },
             "fieldConfig": {
                 "defaults": {
                     "color": {
                         "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
                     },
                     "mappings": [],
                     "thresholds": {
@@ -242,206 +263,73 @@
                                 "value": 80
                             }
                         ]
-                    },
-                    "unit": "short"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "Success"
-                        },
-                        "properties": [
-                            {
-                                "id": "color",
-                                "value": {
-                                    "fixedColor": "green",
-                                    "mode": "fixed"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "Error"
-                        },
-                        "properties": [
-                            {
-                                "id": "color",
-                                "value": {
-                                    "fixedColor": "red",
-                                    "mode": "fixed"
-                                }
-                            }
-                        ]
                     }
-                ]
+                },
+                "overrides": []
             },
             "gridPos": {
                 "h": 5,
-                "w": 3,
-                "x": 6,
-                "y": 0
-            },
-            "id": 8,
-            "options": {
-                "displayMode": "lcd",
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showThresholdLabels": false,
-                "showThresholdMarkers": false,
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
-            },
-            "pluginVersion": "12.1.1",
-            "targets": [
-                {
-                    "datasource": {
-                        "uid": "${datasource}"
-                    },
-                    "disableTextWrap": false,
-                    "editorMode": "builder",
-                    "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"secondary\"})",
-                    "fullMetaSearch": false,
-                    "includeNullMetadata": true,
-                    "legendFormat": "__auto",
-                    "range": true,
-                    "refId": "A",
-                    "useBackend": false
-                }
-            ],
-            "title": "Secondary Collection Status",
-            "type": "bargauge"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "augur_prometheus_01"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": 0
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    },
-                    "unit": "short"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "Success"
-                        },
-                        "properties": [
-                            {
-                                "id": "color",
-                                "value": {
-                                    "fixedColor": "green",
-                                    "mode": "fixed"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "Error"
-                        },
-                        "properties": [
-                            {
-                                "id": "color",
-                                "value": {
-                                    "fixedColor": "red",
-                                    "mode": "fixed"
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            "gridPos": {
-                "h": 5,
-                "w": 3,
+                "w": 6,
                 "x": 9,
                 "y": 0
             },
-            "id": 9,
+            "id": 14,
             "options": {
-                "displayMode": "lcd",
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
                 "legend": {
                     "calcs": [],
                     "displayMode": "list",
                     "placement": "bottom",
-                    "showLegend": false
+                    "showLegend": true
                 },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
                 "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
                 },
-                "showThresholdLabels": false,
-                "showThresholdMarkers": false,
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "color"
+                "xField": "collection_day",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
             },
             "pluginVersion": "12.1.1",
             "targets": [
                 {
                     "datasource": {
-                        "uid": "${datasource}"
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "augur_postgres_01"
                     },
-                    "disableTextWrap": false,
-                    "editorMode": "builder",
-                    "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"facade\"})",
-                    "fullMetaSearch": false,
-                    "includeNullMetadata": true,
-                    "legendFormat": "__auto",
-                    "range": true,
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(facade_data_last_collected)) FROM augur_operations.collection_status WHERE facade_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days' -- Ensures at least a 14-day window (including today)\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n)\nSELECT \n    dr.collection_day, \n    COUNT(cs.core_data_last_collected) AS facade_collections \nFROM \n    date_range dr\nLEFT JOIN \n    augur_operations.collection_status cs \n    ON dr.collection_day = DATE(date_trunc('day', cs.facade_data_last_collected))\n    AND cs.facade_status != 'Ignore'\nGROUP BY \n    dr.collection_day\nORDER BY \n    dr.collection_day ASC;",
                     "refId": "A",
-                    "useBackend": false
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
                 }
             ],
-            "title": "Facade Collection Status",
-            "type": "bargauge"
+            "title": "Facade last collection by date",
+            "type": "barchart"
         },
         {
             "datasource": {
@@ -510,8 +398,8 @@
             },
             "gridPos": {
                 "h": 8,
-                "w": 12,
-                "x": 12,
+                "w": 9,
+                "x": 15,
                 "y": 0
             },
             "id": 5,
@@ -551,12 +439,236 @@
             "type": "timeseries"
         },
         {
+            "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "augur_postgres_01"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 6,
+                "x": 3,
+                "y": 5
+            },
+            "id": 12,
+            "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "orientation": "auto",
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xField": "collection_day",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "augur_postgres_01"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "select DATE(MAX(date_trunc('day', s.data_collection_date))) as collection_day, COUNT(s.repo_id)/19 as scorecard_collections \nfrom augur_data.repo_deps_scorecard s\njoin augur_data.repo r on r.repo_id = s.repo_id\ngroup by DATE(date_trunc('day', s.data_collection_date))\nORDER BY collection_day ASC ",
+                    "refId": "A",
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
+                }
+            ],
+            "title": "Scorecard last collection by date",
+            "type": "barchart"
+        },
+        {
+            "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "augur_postgres_01"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 6,
+                "x": 9,
+                "y": 5
+            },
+            "id": 15,
+            "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "orientation": "auto",
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xField": "collection_day",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "augur_postgres_01"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(secondary_data_last_collected)) FROM augur_operations.collection_status WHERE secondary_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days' -- Ensures at least a 14-day window (including today)\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n)\nSELECT \n    dr.collection_day, \n    COUNT(cs.secondary_data_last_collected) AS secondary_collections \nFROM \n    date_range dr\nLEFT JOIN \n    augur_operations.collection_status cs \n    ON dr.collection_day = DATE(date_trunc('day', cs.secondary_data_last_collected))\n    AND cs.secondary_status != 'Ignore'\nGROUP BY \n    dr.collection_day\nORDER BY \n    dr.collection_day ASC;",
+                    "refId": "A",
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
+                }
+            ],
+            "title": "Secondary last collection by date",
+            "type": "barchart"
+        },
+        {
             "collapsed": true,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 8
+                "y": 10
             },
             "id": 11,
             "panels": [
@@ -581,7 +693,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 14
+                        "y": 11
                     },
                     "id": 6,
                     "options": {
@@ -671,7 +783,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 14
+                        "y": 11
                     },
                     "id": 4,
                     "options": {
@@ -700,6 +812,342 @@
                     ],
                     "title": "Today's Collection Success Rate",
                     "type": "gauge"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "augur_prometheus_01"
+                    },
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "mappings": [],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": 0
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": [
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "Success"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "color",
+                                        "value": {
+                                            "fixedColor": "green",
+                                            "mode": "fixed"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "Error"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "color",
+                                        "value": {
+                                            "fixedColor": "red",
+                                            "mode": "fixed"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 3,
+                        "x": 12,
+                        "y": 18
+                    },
+                    "id": 7,
+                    "options": {
+                        "displayMode": "lcd",
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": false
+                        },
+                        "maxVizHeight": 300,
+                        "minVizHeight": 16,
+                        "minVizWidth": 8,
+                        "namePlacement": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "lastNotNull"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showThresholdLabels": false,
+                        "showThresholdMarkers": false,
+                        "showUnfilled": true,
+                        "sizing": "auto",
+                        "valueMode": "color"
+                    },
+                    "pluginVersion": "12.1.1",
+                    "targets": [
+                        {
+                            "datasource": {
+                                "uid": "${datasource}"
+                            },
+                            "disableTextWrap": false,
+                            "editorMode": "builder",
+                            "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"core\"})",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Core Collection Status",
+                    "type": "bargauge"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "augur_prometheus_01"
+                    },
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "mappings": [],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": 0
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": [
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "Success"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "color",
+                                        "value": {
+                                            "fixedColor": "green",
+                                            "mode": "fixed"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "Error"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "color",
+                                        "value": {
+                                            "fixedColor": "red",
+                                            "mode": "fixed"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 3,
+                        "x": 15,
+                        "y": 18
+                    },
+                    "id": 8,
+                    "options": {
+                        "displayMode": "lcd",
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": false
+                        },
+                        "maxVizHeight": 300,
+                        "minVizHeight": 16,
+                        "minVizWidth": 8,
+                        "namePlacement": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "lastNotNull"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showThresholdLabels": false,
+                        "showThresholdMarkers": false,
+                        "showUnfilled": true,
+                        "sizing": "auto",
+                        "valueMode": "color"
+                    },
+                    "pluginVersion": "12.1.1",
+                    "targets": [
+                        {
+                            "datasource": {
+                                "uid": "${datasource}"
+                            },
+                            "disableTextWrap": false,
+                            "editorMode": "builder",
+                            "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"secondary\"})",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Secondary Collection Status",
+                    "type": "bargauge"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "augur_prometheus_01"
+                    },
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "mappings": [],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": 0
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": [
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "Success"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "color",
+                                        "value": {
+                                            "fixedColor": "green",
+                                            "mode": "fixed"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "Error"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "color",
+                                        "value": {
+                                            "fixedColor": "red",
+                                            "mode": "fixed"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 3,
+                        "x": 18,
+                        "y": 18
+                    },
+                    "id": 9,
+                    "options": {
+                        "displayMode": "lcd",
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": false
+                        },
+                        "maxVizHeight": 300,
+                        "minVizHeight": 16,
+                        "minVizWidth": 8,
+                        "namePlacement": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "lastNotNull"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showThresholdLabels": false,
+                        "showThresholdMarkers": false,
+                        "showUnfilled": true,
+                        "sizing": "auto",
+                        "valueMode": "color"
+                    },
+                    "pluginVersion": "12.1.1",
+                    "targets": [
+                        {
+                            "datasource": {
+                                "uid": "${datasource}"
+                            },
+                            "disableTextWrap": false,
+                            "editorMode": "builder",
+                            "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"facade\"})",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Facade Collection Status",
+                    "type": "bargauge"
                 }
             ],
             "title": "Random stuff",
@@ -752,5 +1200,5 @@
     "timezone": "",
     "title": "Augur Data Collection Status",
     "uid": "augur-collection-status",
-    "version": 2
+    "version": 1
 }
