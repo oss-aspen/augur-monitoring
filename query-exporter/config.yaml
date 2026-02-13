@@ -4,6 +4,12 @@ databases:
     # user: !env AUGUR_DB_USER
     # password: !env AUGUR_DB_PASSWORD
 
+
+# This query exporter is for fetching values that have no easy way to query them as time series in postgres
+# This is because any metric type besides gauge will acumulate values over time. and also prometheus does that... and its a bit of a mess.
+# https://github.com/albertodonato/query-exporter/issues/44#issuecomment-639304405
+# For queries that are already returning data that is basically ready to graph, maybe doing it in grafana is best
+# although large queries might have a performance hit if run too frequently, idk.
 metrics:
   augur_collection_status_counts:
     type: gauge
