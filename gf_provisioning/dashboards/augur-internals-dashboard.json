@@ -31,6 +31,85 @@
     "panels": [
         {
             "datasource": {
+                "type": "prometheus",
+                "uid": "augur_prometheus_01"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "fixedColor": "green",
+                        "mode": "fixed"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "augur_collection_status_full_total"
+                        },
+                        "properties": []
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 6,
+                "w": 3,
+                "x": 4,
+                "y": 0
+            },
+            "id": 1,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                    "calcs": [
+                        "last"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "value",
+                "wideLayout": true
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "disableTextWrap": false,
+                    "editorMode": "builder",
+                    "exemplar": false,
+                    "expr": "augur_collection_status_full_total{database=\"augur\"}",
+                    "fullMetaSearch": false,
+                    "includeNullMetadata": true,
+                    "instant": false,
+                    "legendFormat": "__auto",
+                    "range": true,
+                    "refId": "A",
+                    "useBackend": false
+                }
+            ],
+            "title": "Total Repositories in Database",
+            "type": "stat"
+        },
+        {
+            "datasource": {
                 "type": "grafana-postgresql-datasource",
                 "uid": "augur_postgres_01"
             },
@@ -57,9 +136,9 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
+                "h": 6,
+                "w": 7,
+                "x": 7,
                 "y": 0
             },
             "id": 17,
@@ -175,13 +254,34 @@
         },
         {
             "datasource": {
-                "type": "prometheus",
-                "uid": "augur_prometheus_01"
+                "type": "grafana-postgresql-datasource",
+                "uid": "augur_postgres_01"
             },
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "thresholds"
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
                     },
                     "mappings": [],
                     "thresholds": {
@@ -198,58 +298,72 @@
                         ]
                     }
                 },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "augur_collection_status_full_total"
-                        },
-                        "properties": []
-                    }
-                ]
+                "overrides": []
             },
             "gridPos": {
-                "h": 4,
-                "w": 3,
+                "h": 9,
+                "w": 9,
                 "x": 0,
-                "y": 1
+                "y": 6
             },
-            "id": 1,
+            "id": 14,
             "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                    "calcs": [
-                        "last"
-                    ],
-                    "fields": "",
-                    "values": false
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
                 },
-                "showPercentChange": false,
-                "textMode": "value",
-                "wideLayout": true
+                "orientation": "vertical",
+                "showValue": "always",
+                "stacking": "none",
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xField": "collection_day",
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
                 {
-                    "disableTextWrap": false,
-                    "editorMode": "builder",
-                    "exemplar": false,
-                    "expr": "augur_collection_status_full_total{database=\"augur\"}",
-                    "fullMetaSearch": false,
-                    "includeNullMetadata": true,
-                    "instant": false,
-                    "legendFormat": "__auto",
-                    "range": true,
+                    "datasource": {
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "augur_postgres_01"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(facade_data_last_collected)) FROM augur_operations.collection_status WHERE facade_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.facade_data_last_collected) AS facade_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.facade_data_last_collected))\n        AND cs.facade_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
                     "refId": "A",
-                    "useBackend": false
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
                 }
             ],
-            "title": "Total Repositories in Database",
-            "type": "stat"
+            "title": "Facade last collection by date",
+            "type": "barchart"
         },
         {
             "datasource": {
@@ -302,8 +416,8 @@
             "gridPos": {
                 "h": 9,
                 "w": 9,
-                "x": 6,
-                "y": 1
+                "x": 9,
+                "y": 6
             },
             "id": 13,
             "options": {
@@ -415,10 +529,10 @@
             "gridPos": {
                 "h": 9,
                 "w": 9,
-                "x": 15,
-                "y": 1
+                "x": 0,
+                "y": 15
             },
-            "id": 14,
+            "id": 15,
             "options": {
                 "barRadius": 0,
                 "barWidth": 0.97,
@@ -453,7 +567,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(facade_data_last_collected)) FROM augur_operations.collection_status WHERE facade_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.facade_data_last_collected) AS facade_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.facade_data_last_collected))\n        AND cs.facade_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(secondary_data_last_collected)) FROM augur_operations.collection_status WHERE secondary_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.secondary_data_last_collected) AS secondary_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.secondary_data_last_collected))\n        AND cs.secondary_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -474,7 +588,120 @@
                     }
                 }
             ],
-            "title": "Facade last collection by date",
+            "title": "Secondary last collection by date",
+            "type": "barchart"
+        },
+        {
+            "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "augur_postgres_01"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": 0
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 9,
+                "x": 9,
+                "y": 15
+            },
+            "id": 12,
+            "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "orientation": "vertical",
+                "showValue": "always",
+                "stacking": "none",
+                "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xField": "collection_day",
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
+            },
+            "pluginVersion": "12.1.1",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-postgresql-datasource",
+                        "uid": "augur_postgres_01"
+                    },
+                    "editorMode": "code",
+                    "format": "table",
+                    "rawQuery": true,
+                    "rawSql": "SELECT \n    DATE(MAX(date_trunc('day', s.data_collection_date))) AS collection_day, \n    COUNT(s.repo_id) / 19 AS scorecard_collections \nFROM \n    augur_data.repo_deps_scorecard s\nJOIN \n    augur_data.repo r ON r.repo_id = s.repo_id\nWHERE r.repo_archived_date_collected IS NULL \nGROUP BY \n    DATE(date_trunc('day', s.data_collection_date))\n-- The filter logic starts here\nHAVING \n    ${recent_days} = -1 \n    OR \n    DATE(date_trunc('day', s.data_collection_date)) >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\nORDER BY \n    collection_day ASC;",
+                    "refId": "A",
+                    "sql": {
+                        "columns": [
+                            {
+                                "parameters": [],
+                                "type": "function"
+                            }
+                        ],
+                        "groupBy": [
+                            {
+                                "property": {
+                                    "type": "string"
+                                },
+                                "type": "groupBy"
+                            }
+                        ],
+                        "limit": 50
+                    }
+                }
+            ],
+            "title": "Scorecard last collection by date",
             "type": "barchart"
         },
         {
@@ -543,10 +770,10 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 7,
-                "w": 6,
-                "x": 0,
-                "y": 5
+                "h": 13,
+                "w": 12,
+                "x": 3,
+                "y": 24
             },
             "id": 5,
             "options": {
@@ -570,7 +797,7 @@
                         "uid": "augur_prometheus_01"
                     },
                     "disableTextWrap": false,
-                    "editorMode": "builder",
+                    "editorMode": "code",
                     "expr": "sum by(collection_phase) (augur_14d_counts{database=\"augur\"})",
                     "fullMetaSearch": false,
                     "includeNullMetadata": true,
@@ -585,238 +812,12 @@
             "type": "timeseries"
         },
         {
-            "datasource": {
-                "type": "grafana-postgresql-datasource",
-                "uid": "augur_postgres_01"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisBorderShow": false,
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "fillOpacity": 80,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "lineWidth": 1,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": 0
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 9,
-                "w": 9,
-                "x": 6,
-                "y": 10
-            },
-            "id": 12,
-            "options": {
-                "barRadius": 0,
-                "barWidth": 0.97,
-                "fullHighlight": false,
-                "groupWidth": 0.7,
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "orientation": "vertical",
-                "showValue": "always",
-                "stacking": "none",
-                "tooltip": {
-                    "hideZeros": false,
-                    "mode": "single",
-                    "sort": "none"
-                },
-                "xField": "collection_day",
-                "xTickLabelMaxLength": 5,
-                "xTickLabelRotation": 90,
-                "xTickLabelSpacing": 100
-            },
-            "pluginVersion": "12.1.1",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
-                    },
-                    "editorMode": "code",
-                    "format": "table",
-                    "rawQuery": true,
-                    "rawSql": "SELECT \n    DATE(MAX(date_trunc('day', s.data_collection_date))) AS collection_day, \n    COUNT(s.repo_id) / 19 AS scorecard_collections \nFROM \n    augur_data.repo_deps_scorecard s\nJOIN \n    augur_data.repo r ON r.repo_id = s.repo_id\nWHERE r.repo_archived_date_collected IS NULL \nGROUP BY \n    DATE(date_trunc('day', s.data_collection_date))\n-- The filter logic starts here\nHAVING \n    ${recent_days} = -1 \n    OR \n    DATE(date_trunc('day', s.data_collection_date)) >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\nORDER BY \n    collection_day ASC;",
-                    "refId": "A",
-                    "sql": {
-                        "columns": [
-                            {
-                                "parameters": [],
-                                "type": "function"
-                            }
-                        ],
-                        "groupBy": [
-                            {
-                                "property": {
-                                    "type": "string"
-                                },
-                                "type": "groupBy"
-                            }
-                        ],
-                        "limit": 50
-                    }
-                }
-            ],
-            "title": "Scorecard last collection by date",
-            "type": "barchart"
-        },
-        {
-            "datasource": {
-                "type": "grafana-postgresql-datasource",
-                "uid": "augur_postgres_01"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisBorderShow": false,
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "fillOpacity": 80,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "lineWidth": 1,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": 0
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 9,
-                "w": 9,
-                "x": 15,
-                "y": 10
-            },
-            "id": 15,
-            "options": {
-                "barRadius": 0,
-                "barWidth": 0.97,
-                "fullHighlight": false,
-                "groupWidth": 0.7,
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "orientation": "vertical",
-                "showValue": "always",
-                "stacking": "none",
-                "tooltip": {
-                    "hideZeros": false,
-                    "mode": "single",
-                    "sort": "none"
-                },
-                "xField": "collection_day",
-                "xTickLabelMaxLength": 5,
-                "xTickLabelRotation": 90,
-                "xTickLabelSpacing": 100
-            },
-            "pluginVersion": "12.1.1",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
-                    },
-                    "editorMode": "code",
-                    "format": "table",
-                    "rawQuery": true,
-                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(secondary_data_last_collected)) FROM augur_operations.collection_status WHERE secondary_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.secondary_data_last_collected) AS secondary_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.secondary_data_last_collected))\n        AND cs.secondary_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
-                    "refId": "A",
-                    "sql": {
-                        "columns": [
-                            {
-                                "parameters": [],
-                                "type": "function"
-                            }
-                        ],
-                        "groupBy": [
-                            {
-                                "property": {
-                                    "type": "string"
-                                },
-                                "type": "groupBy"
-                            }
-                        ],
-                        "limit": 50
-                    }
-                }
-            ],
-            "title": "Secondary last collection by date",
-            "type": "barchart"
-        },
-        {
             "collapsed": true,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 19
+                "y": 37
             },
             "id": 11,
             "panels": [
@@ -841,7 +842,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 55
+                        "y": 7
                     },
                     "id": 6,
                     "options": {
@@ -931,7 +932,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 55
+                        "y": 7
                     },
                     "id": 4,
                     "options": {
@@ -1024,7 +1025,7 @@
                         "h": 4,
                         "w": 3,
                         "x": 12,
-                        "y": 62
+                        "y": 14
                     },
                     "id": 7,
                     "options": {
@@ -1136,7 +1137,7 @@
                         "h": 4,
                         "w": 3,
                         "x": 15,
-                        "y": 62
+                        "y": 14
                     },
                     "id": 8,
                     "options": {
@@ -1248,7 +1249,7 @@
                         "h": 4,
                         "w": 3,
                         "x": 18,
-                        "y": 62
+                        "y": 14
                     },
                     "id": 9,
                     "options": {
@@ -1348,5 +1349,5 @@
     "timezone": "",
     "title": "Augur Data Collection Status",
     "uid": "augur-collection-status",
-    "version": 4
+    "version": 5
 }
