@@ -26,7 +26,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 1,
-    "id": 3,
+    "id": 4,
     "links": [],
     "panels": [
         {
@@ -156,7 +156,7 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
+                "h": 7,
                 "w": 6,
                 "x": 3,
                 "y": 0
@@ -173,7 +173,7 @@
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
+                "orientation": "vertical",
                 "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
@@ -182,8 +182,9 @@
                     "sort": "none"
                 },
                 "xField": "collection_day",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
@@ -195,7 +196,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(core_data_last_collected)) FROM augur_operations.collection_status WHERE core_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days' -- Ensures at least a 14-day window (including today)\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n)\nSELECT \n    dr.collection_day, \n    COUNT(cs.core_data_last_collected) AS core_collections \nFROM \n    date_range dr\nLEFT JOIN \n    augur_operations.collection_status cs \n    ON dr.collection_day = DATE(date_trunc('day', cs.core_data_last_collected))\n    AND cs.core_status != 'Ignore'\nGROUP BY \n    dr.collection_day\nORDER BY \n    dr.collection_day ASC;",
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(core_data_last_collected)) FROM augur_operations.collection_status WHERE core_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.core_data_last_collected) AS core_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.core_data_last_collected))\n        AND cs.core_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -268,7 +269,7 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
+                "h": 7,
                 "w": 6,
                 "x": 9,
                 "y": 0
@@ -285,7 +286,7 @@
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
+                "orientation": "vertical",
                 "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
@@ -294,8 +295,9 @@
                     "sort": "none"
                 },
                 "xField": "collection_day",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
@@ -307,7 +309,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(facade_data_last_collected)) FROM augur_operations.collection_status WHERE facade_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days' -- Ensures at least a 14-day window (including today)\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n)\nSELECT \n    dr.collection_day, \n    COUNT(cs.core_data_last_collected) AS facade_collections \nFROM \n    date_range dr\nLEFT JOIN \n    augur_operations.collection_status cs \n    ON dr.collection_day = DATE(date_trunc('day', cs.facade_data_last_collected))\n    AND cs.facade_status != 'Ignore'\nGROUP BY \n    dr.collection_day\nORDER BY \n    dr.collection_day ASC;",
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(facade_data_last_collected)) FROM augur_operations.collection_status WHERE facade_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.facade_data_last_collected) AS facade_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.facade_data_last_collected))\n        AND cs.facade_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -487,10 +489,10 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
+                "h": 7,
                 "w": 6,
                 "x": 3,
-                "y": 5
+                "y": 7
             },
             "id": 12,
             "options": {
@@ -504,7 +506,7 @@
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
+                "orientation": "vertical",
                 "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
@@ -513,8 +515,9 @@
                     "sort": "none"
                 },
                 "xField": "collection_day",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
@@ -526,7 +529,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "select DATE(MAX(date_trunc('day', s.data_collection_date))) as collection_day, COUNT(s.repo_id)/19 as scorecard_collections \nfrom augur_data.repo_deps_scorecard s\njoin augur_data.repo r on r.repo_id = s.repo_id\ngroup by DATE(date_trunc('day', s.data_collection_date))\nORDER BY collection_day ASC ",
+                    "rawSql": "SELECT \n    DATE(MAX(date_trunc('day', s.data_collection_date))) AS collection_day, \n    COUNT(s.repo_id) / 19 AS scorecard_collections \nFROM \n    augur_data.repo_deps_scorecard s\nJOIN \n    augur_data.repo r ON r.repo_id = s.repo_id\nGROUP BY \n    DATE(date_trunc('day', s.data_collection_date))\n-- The filter logic starts here\nHAVING \n    ${recent_days} = -1 \n    OR \n    DATE(date_trunc('day', s.data_collection_date)) >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\nORDER BY \n    collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -599,10 +602,10 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
+                "h": 7,
                 "w": 6,
                 "x": 9,
-                "y": 5
+                "y": 7
             },
             "id": 15,
             "options": {
@@ -616,7 +619,7 @@
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
+                "orientation": "vertical",
                 "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
@@ -625,8 +628,9 @@
                     "sort": "none"
                 },
                 "xField": "collection_day",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
@@ -638,7 +642,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(secondary_data_last_collected)) FROM augur_operations.collection_status WHERE secondary_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days' -- Ensures at least a 14-day window (including today)\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n)\nSELECT \n    dr.collection_day, \n    COUNT(cs.secondary_data_last_collected) AS secondary_collections \nFROM \n    date_range dr\nLEFT JOIN \n    augur_operations.collection_status cs \n    ON dr.collection_day = DATE(date_trunc('day', cs.secondary_data_last_collected))\n    AND cs.secondary_status != 'Ignore'\nGROUP BY \n    dr.collection_day\nORDER BY \n    dr.collection_day ASC;",
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(secondary_data_last_collected)) FROM augur_operations.collection_status WHERE secondary_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.secondary_data_last_collected) AS secondary_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.secondary_data_last_collected))\n        AND cs.secondary_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -668,7 +672,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 10
+                "y": 14
             },
             "id": 11,
             "panels": [
@@ -1187,7 +1191,7 @@
                         "value": "30"
                     }
                 ],
-                "query": "14",
+                "query": "",
                 "type": "custom"
             }
         ]
@@ -1200,5 +1204,5 @@
     "timezone": "",
     "title": "Augur Data Collection Status",
     "uid": "augur-collection-status",
-    "version": 1
+    "version": 2
 }
