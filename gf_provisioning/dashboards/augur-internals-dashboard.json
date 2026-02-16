@@ -174,7 +174,7 @@
                     "showLegend": true
                 },
                 "orientation": "vertical",
-                "showValue": "auto",
+                "showValue": "always",
                 "stacking": "none",
                 "tooltip": {
                     "hideZeros": false,
@@ -287,7 +287,7 @@
                     "showLegend": true
                 },
                 "orientation": "vertical",
-                "showValue": "auto",
+                "showValue": "always",
                 "stacking": "none",
                 "tooltip": {
                     "hideZeros": false,
@@ -507,7 +507,7 @@
                     "showLegend": true
                 },
                 "orientation": "vertical",
-                "showValue": "auto",
+                "showValue": "always",
                 "stacking": "none",
                 "tooltip": {
                     "hideZeros": false,
@@ -620,7 +620,7 @@
                     "showLegend": true
                 },
                 "orientation": "vertical",
-                "showValue": "auto",
+                "showValue": "always",
                 "stacking": "none",
                 "tooltip": {
                     "hideZeros": false,
