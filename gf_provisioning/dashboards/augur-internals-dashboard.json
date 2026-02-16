@@ -529,7 +529,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "SELECT \n    DATE(MAX(date_trunc('day', s.data_collection_date))) AS collection_day, \n    COUNT(s.repo_id) / 19 AS scorecard_collections \nFROM \n    augur_data.repo_deps_scorecard s\nJOIN \n    augur_data.repo r ON r.repo_id = s.repo_id\nGROUP BY \n    DATE(date_trunc('day', s.data_collection_date))\n-- The filter logic starts here\nHAVING \n    ${recent_days} = -1 \n    OR \n    DATE(date_trunc('day', s.data_collection_date)) >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\nORDER BY \n    collection_day ASC;",
+                    "rawSql": "SELECT \n    DATE(MAX(date_trunc('day', s.data_collection_date))) AS collection_day, \n    COUNT(s.repo_id) / 19 AS scorecard_collections \nFROM \n    augur_data.repo_deps_scorecard s\nJOIN \n    augur_data.repo r ON r.repo_id = s.repo_id\nWHERE r.repo_archived_date_collected IS NULL \nGROUP BY \n    DATE(date_trunc('day', s.data_collection_date))\n-- The filter logic starts here\nHAVING \n    ${recent_days} = -1 \n    OR \n    DATE(date_trunc('day', s.data_collection_date)) >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\nORDER BY \n    collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
