@@ -26,7 +26,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 1,
-    "id": 3,
+    "id": 4,
     "links": [],
     "panels": [
         {
@@ -156,7 +156,7 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
+                "h": 7,
                 "w": 6,
                 "x": 3,
                 "y": 0
@@ -173,7 +173,7 @@
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
+                "orientation": "vertical",
                 "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
@@ -182,8 +182,9 @@
                     "sort": "none"
                 },
                 "xField": "collection_day",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
@@ -268,7 +269,7 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
+                "h": 7,
                 "w": 6,
                 "x": 9,
                 "y": 0
@@ -285,7 +286,7 @@
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
+                "orientation": "vertical",
                 "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
@@ -294,8 +295,9 @@
                     "sort": "none"
                 },
                 "xField": "collection_day",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
@@ -487,10 +489,10 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
+                "h": 7,
                 "w": 6,
                 "x": 3,
-                "y": 5
+                "y": 7
             },
             "id": 12,
             "options": {
@@ -504,7 +506,7 @@
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
+                "orientation": "vertical",
                 "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
@@ -513,8 +515,9 @@
                     "sort": "none"
                 },
                 "xField": "collection_day",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
@@ -599,10 +602,10 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 5,
+                "h": 7,
                 "w": 6,
                 "x": 9,
-                "y": 5
+                "y": 7
             },
             "id": 15,
             "options": {
@@ -616,7 +619,7 @@
                     "placement": "bottom",
                     "showLegend": true
                 },
-                "orientation": "auto",
+                "orientation": "vertical",
                 "showValue": "auto",
                 "stacking": "none",
                 "tooltip": {
@@ -625,8 +628,9 @@
                     "sort": "none"
                 },
                 "xField": "collection_day",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelMaxLength": 5,
+                "xTickLabelRotation": 90,
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "12.1.1",
             "targets": [
@@ -668,7 +672,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 10
+                "y": 14
             },
             "id": 11,
             "panels": [
@@ -1187,7 +1191,7 @@
                         "value": "30"
                     }
                 ],
-                "query": "14",
+                "query": "",
                 "type": "custom"
             }
         ]
@@ -1200,5 +1204,5 @@
     "timezone": "",
     "title": "Augur Data Collection Status",
     "uid": "augur-collection-status",
-    "version": 1
+    "version": 2
 }
