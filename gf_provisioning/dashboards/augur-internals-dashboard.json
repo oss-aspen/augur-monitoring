@@ -169,7 +169,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Facade\nFROM augur_operations.collection_status \nWHERE \n(facade_data_last_collected < CURRENT_DATE - INTERVAL '13 days' OR facade_data_last_collected IS NULL) AND \nfacade_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Facade\nFROM augur_operations.collection_status \nWHERE \n(facade_data_last_collected < CURRENT_DATE - INTERVAL '14 days' OR facade_data_last_collected IS NULL) AND \nfacade_status != 'Ignore'",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -199,7 +199,7 @@
                     "format": "table",
                     "hide": false,
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Core\nFROM augur_operations.collection_status \nWHERE \n(core_data_last_collected < CURRENT_DATE - INTERVAL '13 days' OR core_data_last_collected IS NULL) AND \ncore_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Core\nFROM augur_operations.collection_status \nWHERE \n(core_data_last_collected < CURRENT_DATE - INTERVAL '14 days' OR core_data_last_collected IS NULL) AND \ncore_status != 'Ignore'",
                     "refId": "B",
                     "sql": {
                         "columns": [
@@ -228,7 +228,7 @@
                     "format": "table",
                     "hide": false,
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Secondary\nFROM augur_operations.collection_status \nWHERE \n(secondary_data_last_collected < CURRENT_DATE - INTERVAL '13 days' OR secondary_data_last_collected IS NULL)  AND \nsecondary_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Secondary\nFROM augur_operations.collection_status \nWHERE \n(secondary_data_last_collected < CURRENT_DATE - INTERVAL '14 days' OR secondary_data_last_collected IS NULL)  AND \nsecondary_status != 'Ignore'",
                     "refId": "C",
                     "sql": {
                         "columns": [
@@ -1349,5 +1349,5 @@
     "timezone": "",
     "title": "Augur Data Collection Status",
     "uid": "augur-collection-status",
-    "version": 5
+    "version": 6
 }
