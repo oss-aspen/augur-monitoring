@@ -4,7 +4,6 @@ databases:
     # user: !env AUGUR_DB_USER
     # password: !env AUGUR_DB_PASSWORD
 
-
 # This query exporter is for fetching values that have no easy way to query them as time series in postgres
 # This is because any metric type besides gauge will acumulate values over time. and also prometheus does that... and its a bit of a mess.
 # https://github.com/albertodonato/query-exporter/issues/44#issuecomment-639304405
@@ -33,6 +32,22 @@ metrics:
     type: gauge
     labels: [collection_phase]
     description: Total number of repositories with last collected dates for each phase of collection less than 14 days ago
+  augur_commits_emails_populated_counts:
+    type: gauge
+    labels: [column]
+    description: Number of total populated (non-null) values in each email addresses column of the commits table.
+  augur_contributors_emails_populated_counts:
+    type: gauge
+    labels: [column]
+    description: Number of total populated (non-null) values in each email addresses column of the contributors table.
+  augur_rows_by_table_estimate:
+    type: gauge
+    labels: [schema, table]
+    description: Number of total live tuples entries in each table as estimated by pg_stat_user_tables.
+  augur_dead_rows_by_table_estimate:
+    type: gauge
+    labels: [schema, table]
+    description: Number of total live tuples entries in each table as estimated by pg_stat_user_tables.
 
 queries:
   collection_status_counts:
@@ -186,3 +201,52 @@ queries:
       FROM
           augur_operations.collection_status
       WHERE facade_data_last_collected > (CURRENT_DATE - interval '14 days') AND facade_status != 'Ignore'
+  contributor_email_populated_counts:
+    interval: 60s
+    databases: [augur]
+    metrics: [augur_contributors_emails_populated_counts]
+    sql: |
+      SELECT 'cntrb_email' AS column, COUNT(c.cntrb_email) as augur_contributors_emails_populated_counts from augur_data.contributors c
+      UNION ALL
+      SELECT 'cntrb_canonical' AS column, COUNT(c.cntrb_canonical) as augur_contributors_emails_populated_counts from augur_data.contributors c;
+  commit_email_populated_counts:
+    interval: 60s
+    databases: [augur]
+    metrics: [augur_commits_emails_populated_counts]
+    sql: |
+      SELECT 'cmt_author_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      UNION ALL
+      SELECT 'cmt_author_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      UNION ALL
+      SELECT 'cmt_committer_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      UNION ALL
+      SELECT 'cmt_committer_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c;
+  # this is the perfectly precise method but takes too much time to run/performance hit
+  # row_counts_by_table:
+  #   interval: 60s
+  #   databases: [augur]
+  #   metrics: [augur_contributors_emails_total_counts]
+  #   sql: |
+  #     SELECT 'contributors' AS column, COUNT(*) as count from augur_data.contributors;
+  #     UNION ALL
+  #     SELECT 'commits' AS column, COUNT(*) as count from augur_data.contributors c;
+  row_count_estimates_by_table:
+    interval: 30s
+    databases: [augur]
+    metrics: [augur_rows_by_table_estimate]
+    sql: |
+      SELECT 
+        schemaname as schema, 
+        relname as table, 
+        n_live_tup AS augur_rows_by_table_estimate
+      FROM pg_stat_user_tables;
+  dead_row_count_estimates_by_table:
+    interval: 30s
+    databases: [augur]
+    metrics: [augur_dead_rows_by_table_estimate]
+    sql: |
+      SELECT
+        schemaname as schema,
+        relname as table,
+        n_dead_tup AS augur_dead_rows_by_table_estimate
+      FROM pg_stat_user_tables;
