@@ -41,6 +41,10 @@ metrics:
     type: gauge
     labels: [column]
     description: Number of total populated (non-null) values in each email addresses column of the contributors table.
+  augur_rows_by_table_estimate:
+    type: gauge
+    labels: [schema, table]
+    description: Number of total live tuples entries in each table as estimated by pg_stat_user_tables.
 
 queries:
   collection_status_counts:
@@ -214,3 +218,22 @@ queries:
       SELECT 'cmt_committer_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
       UNION ALL
       SELECT 'cmt_committer_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c;
+  # this is the perfectly precise method but takes too much time to run/performance hit
+  # row_counts_by_table:
+  #   interval: 60s
+  #   databases: [augur]
+  #   metrics: [augur_contributors_emails_total_counts]
+  #   sql: |
+  #     SELECT 'contributors' AS column, COUNT(*) as count from augur_data.contributors;
+  #     UNION ALL
+  #     SELECT 'commits' AS column, COUNT(*) as count from augur_data.contributors c;
+  row_count_estimates_by_table:
+    interval: 30s
+    databases: [augur]
+    metrics: [augur_rows_by_table_estimate]
+    sql: |
+      SELECT 
+        schemaname as schema, 
+        relname as table, 
+        n_live_tup AS augur_rows_by_table_estimate
+      FROM pg_stat_user_tables;
