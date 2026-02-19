@@ -33,6 +33,14 @@ metrics:
     type: gauge
     labels: [collection_phase]
     description: Total number of repositories with last collected dates for each phase of collection less than 14 days ago
+  augur_commits_emails_populated_counts:
+    type: gauge
+    labels: [column]
+    description: Number of total populated (non-null) values in each email addresses column of the commits table.
+  augur_contributors_emails_populated_counts:
+    type: gauge
+    labels: [column]
+    description: Number of total populated (non-null) values in each email addresses column of the contributors table.
 
 queries:
   collection_status_counts:
@@ -186,3 +194,23 @@ queries:
       FROM
           augur_operations.collection_status
       WHERE facade_data_last_collected > (CURRENT_DATE - interval '14 days') AND facade_status != 'Ignore'
+  contributor_email_populated_counts:
+    interval: 60s
+    databases: [augur]
+    metrics: [augur_contributors_emails_populated_counts]
+    sql: |
+      SELECT 'cntrb_email' AS column, COUNT(c.cntrb_email) as augur_contributors_emails_populated_counts from augur_data.contributors c
+      UNION ALL
+      SELECT 'cntrb_canonical' AS column, COUNT(c.cntrb_canonical) as augur_contributors_emails_populated_counts from augur_data.contributors c;
+  commit_email_populated_counts:
+    interval: 60s
+    databases: [augur]
+    metrics: [augur_commits_emails_populated_counts]
+    sql: |
+      SELECT 'cmt_author_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      UNION ALL
+      SELECT 'cmt_author_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      UNION ALL
+      SELECT 'cmt_committer_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      UNION ALL
+      SELECT 'cmt_committer_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c;
