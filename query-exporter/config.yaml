@@ -45,6 +45,10 @@ metrics:
     type: gauge
     labels: [schema, table]
     description: Number of total live tuples entries in each table as estimated by pg_stat_user_tables.
+  augur_dead_rows_by_table_estimate:
+    type: gauge
+    labels: [schema, table]
+    description: Number of total live tuples entries in each table as estimated by pg_stat_user_tables.
 
 queries:
   collection_status_counts:
@@ -236,4 +240,14 @@ queries:
         schemaname as schema, 
         relname as table, 
         n_live_tup AS augur_rows_by_table_estimate
+      FROM pg_stat_user_tables;
+  dead_row_count_estimates_by_table:
+    interval: 30s
+    databases: [augur]
+    metrics: [augur_dead_rows_by_table_estimate]
+    sql: |
+      SELECT
+        schemaname as schema,
+        relname as table,
+        n_dead_tup AS augur_dead_rows_by_table_estimate
       FROM pg_stat_user_tables;
