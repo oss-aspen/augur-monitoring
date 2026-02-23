@@ -358,7 +358,7 @@
                     "hide": false,
                     "includeNullMetadata": true,
                     "instant": false,
-                    "legendFormat": "__auto",
+                    "legendFormat": "{{table}} total rows",
                     "range": true,
                     "refId": "B",
                     "useBackend": false
@@ -699,7 +699,7 @@
                     "hide": false,
                     "includeNullMetadata": true,
                     "instant": false,
-                    "legendFormat": "__auto",
+                    "legendFormat": "{{table}} total rows",
                     "range": true,
                     "refId": "B",
                     "useBackend": false
