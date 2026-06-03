@@ -169,7 +169,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Facade\nFROM augur_operations.collection_status \nWHERE \n(facade_data_last_collected < CURRENT_DATE - INTERVAL '14 days' OR facade_data_last_collected IS NULL) AND \nfacade_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Facade\nFROM augur_operations.collection_status \nWHERE \n(facade_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR facade_data_last_collected IS NULL) AND \nfacade_status != 'Ignore'",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -199,7 +199,7 @@
                     "format": "table",
                     "hide": false,
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Core\nFROM augur_operations.collection_status \nWHERE \n(core_data_last_collected < CURRENT_DATE - INTERVAL '14 days' OR core_data_last_collected IS NULL) AND \ncore_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Core\nFROM augur_operations.collection_status \nWHERE \n(core_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR core_data_last_collected IS NULL) AND \ncore_status != 'Ignore'",
                     "refId": "B",
                     "sql": {
                         "columns": [
@@ -228,7 +228,7 @@
                     "format": "table",
                     "hide": false,
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Secondary\nFROM augur_operations.collection_status \nWHERE \n(secondary_data_last_collected < CURRENT_DATE - INTERVAL '14 days' OR secondary_data_last_collected IS NULL)  AND \nsecondary_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Secondary\nFROM augur_operations.collection_status \nWHERE \n(secondary_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR secondary_data_last_collected IS NULL)  AND \nsecondary_status != 'Ignore'",
                     "refId": "C",
                     "sql": {
                         "columns": [
@@ -251,121 +251,6 @@
             ],
             "title": "Repositories outside of collection range",
             "type": "stat"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "augur_prometheus_01"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisBorderShow": false,
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "barWidthFactor": 0.6,
-                        "drawStyle": "line",
-                        "fillOpacity": 0,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "insertNulls": false,
-                        "lineInterpolation": "linear",
-                        "lineWidth": 1,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "auto",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "none"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": 0
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 6,
-                "x": 18,
-                "y": 0
-            },
-            "id": 18,
-            "options": {
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "hideZeros": false,
-                    "mode": "single",
-                    "sort": "none"
-                }
-            },
-            "pluginVersion": "12.1.1",
-            "targets": [
-                {
-                    "disableTextWrap": false,
-                    "editorMode": "builder",
-                    "exemplar": false,
-                    "expr": "augur_commits_emails_populated_counts",
-                    "fullMetaSearch": false,
-                    "includeNullMetadata": true,
-                    "legendFormat": "{{column}}",
-                    "range": true,
-                    "refId": "A",
-                    "useBackend": false
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "augur_prometheus_01"
-                    },
-                    "disableTextWrap": false,
-                    "editorMode": "builder",
-                    "expr": "augur_rows_by_table_estimate{table=\"commits\"}",
-                    "fullMetaSearch": false,
-                    "hide": false,
-                    "includeNullMetadata": true,
-                    "instant": false,
-                    "legendFormat": "{{table}} total rows",
-                    "range": true,
-                    "refId": "B",
-                    "useBackend": false
-                }
-            ],
-            "title": "Augur Commit table email population",
-            "type": "timeseries"
         },
         {
             "datasource": {
@@ -592,121 +477,6 @@
             ],
             "title": "Core last collection by date",
             "type": "barchart"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "augur_prometheus_01"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisBorderShow": false,
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "barWidthFactor": 0.6,
-                        "drawStyle": "line",
-                        "fillOpacity": 0,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "insertNulls": false,
-                        "lineInterpolation": "linear",
-                        "lineWidth": 1,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "auto",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "none"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": 0
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    }
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 6,
-                "x": 18,
-                "y": 8
-            },
-            "id": 19,
-            "options": {
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "hideZeros": false,
-                    "mode": "single",
-                    "sort": "none"
-                }
-            },
-            "pluginVersion": "12.1.1",
-            "targets": [
-                {
-                    "disableTextWrap": false,
-                    "editorMode": "builder",
-                    "exemplar": false,
-                    "expr": "augur_contributors_emails_populated_counts",
-                    "fullMetaSearch": false,
-                    "includeNullMetadata": true,
-                    "legendFormat": "{{column}}",
-                    "range": true,
-                    "refId": "A",
-                    "useBackend": false
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "augur_prometheus_01"
-                    },
-                    "disableTextWrap": false,
-                    "editorMode": "builder",
-                    "expr": "augur_rows_by_table_estimate{table=\"contributors\"}",
-                    "fullMetaSearch": false,
-                    "hide": false,
-                    "includeNullMetadata": true,
-                    "instant": false,
-                    "legendFormat": "{{table}} total rows",
-                    "range": true,
-                    "refId": "B",
-                    "useBackend": false
-                }
-            ],
-            "title": "Augur Contributors table email population",
-            "type": "timeseries"
         },
         {
             "datasource": {
@@ -1579,5 +1349,5 @@
     "timezone": "",
     "title": "Augur Data Collection Status",
     "uid": "augur-collection-status",
-    "version": 8
+    "version": 9
 }
