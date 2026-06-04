@@ -1347,7 +1347,7 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Augur Data Collection Status",
+    "title": "CollectOSS Data Collection Status",
     "uid": "augur-collection-status",
     "version": 9
 }
