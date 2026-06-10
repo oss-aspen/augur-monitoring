@@ -59,7 +59,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "augur_collection_status_full_total"
+                            "options": "collectoss_collection_status_full_total"
                         },
                         "properties": []
                     }
@@ -95,7 +95,7 @@
                     "disableTextWrap": false,
                     "editorMode": "builder",
                     "exemplar": false,
-                    "expr": "augur_collection_status_full_total{database=\"augur\"}",
+                    "expr": "collectoss_collection_status_full_total{database=\"augur\"}",
                     "fullMetaSearch": false,
                     "includeNullMetadata": true,
                     "instant": false,
@@ -798,7 +798,7 @@
                     },
                     "disableTextWrap": false,
                     "editorMode": "code",
-                    "expr": "sum by(collection_phase) (augur_14d_counts{database=\"augur\"})",
+                    "expr": "sum by(collection_phase) (collectoss_14d_counts{database=\"augur\"})",
                     "fullMetaSearch": false,
                     "includeNullMetadata": true,
                     "instant": false,
@@ -954,7 +954,7 @@
                     "pluginVersion": "12.1.1",
                     "targets": [
                         {
-                            "expr": "sum(augur_collected_recently_counts{days_ago=\"0\"}) / scalar(augur_collection_status_total)",
+                            "expr": "sum(collectoss_collected_recently_counts{days_ago=\"0\"}) / scalar(collectoss_collection_status_total)",
                             "legendFormat": "Today's Success Rate",
                             "refId": "A"
                         }
@@ -1062,7 +1062,7 @@
                             },
                             "disableTextWrap": false,
                             "editorMode": "builder",
-                            "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"core\"})",
+                            "expr": "sum by(collection_state) (collectoss_collection_status_counts{collection_phase=\"core\"})",
                             "fullMetaSearch": false,
                             "includeNullMetadata": true,
                             "legendFormat": "__auto",
@@ -1174,7 +1174,7 @@
                             },
                             "disableTextWrap": false,
                             "editorMode": "builder",
-                            "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"secondary\"})",
+                            "expr": "sum by(collection_state) (collectoss_collection_status_counts{collection_phase=\"secondary\"})",
                             "fullMetaSearch": false,
                             "includeNullMetadata": true,
                             "legendFormat": "__auto",
@@ -1286,7 +1286,7 @@
                             },
                             "disableTextWrap": false,
                             "editorMode": "builder",
-                            "expr": "sum by(collection_state) (augur_collection_status_counts{collection_phase=\"facade\"})",
+                            "expr": "sum by(collection_state) (collectoss_collection_status_counts{collection_phase=\"facade\"})",
                             "fullMetaSearch": false,
                             "includeNullMetadata": true,
                             "legendFormat": "__auto",
