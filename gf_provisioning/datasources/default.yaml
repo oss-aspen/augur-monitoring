@@ -11,7 +11,7 @@ datasources:
     # Give it a unique, stable string.
     uid: collectoss_prometheus_01
   - name: Augur Postgres
-    uid: augur_postgres_01
+    uid: collectoss_postgres_01
     type: postgres
     url: ${POSTGRES_HOST}:${POSTGRES_PORT}
     user: ${POSTGRES_USER}

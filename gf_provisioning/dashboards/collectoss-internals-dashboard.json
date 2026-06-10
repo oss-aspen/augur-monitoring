@@ -111,7 +111,7 @@
         {
             "datasource": {
                 "type": "grafana-postgresql-datasource",
-                "uid": "augur_postgres_01"
+                "uid": "collectoss_postgres_01"
             },
             "fieldConfig": {
                 "defaults": {
@@ -164,7 +164,7 @@
                 {
                     "datasource": {
                         "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
+                        "uid": "collectoss_postgres_01"
                     },
                     "editorMode": "code",
                     "format": "table",
@@ -193,7 +193,7 @@
                 {
                     "datasource": {
                         "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
+                        "uid": "collectoss_postgres_01"
                     },
                     "editorMode": "code",
                     "format": "table",
@@ -222,7 +222,7 @@
                 {
                     "datasource": {
                         "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
+                        "uid": "collectoss_postgres_01"
                     },
                     "editorMode": "code",
                     "format": "table",
@@ -255,7 +255,7 @@
         {
             "datasource": {
                 "type": "grafana-postgresql-datasource",
-                "uid": "augur_postgres_01"
+                "uid": "collectoss_postgres_01"
             },
             "fieldConfig": {
                 "defaults": {
@@ -336,7 +336,7 @@
                 {
                     "datasource": {
                         "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
+                        "uid": "collectoss_postgres_01"
                     },
                     "editorMode": "code",
                     "format": "table",
@@ -368,7 +368,7 @@
         {
             "datasource": {
                 "type": "grafana-postgresql-datasource",
-                "uid": "augur_postgres_01"
+                "uid": "collectoss_postgres_01"
             },
             "fieldConfig": {
                 "defaults": {
@@ -449,7 +449,7 @@
                 {
                     "datasource": {
                         "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
+                        "uid": "collectoss_postgres_01"
                     },
                     "editorMode": "code",
                     "format": "table",
@@ -481,7 +481,7 @@
         {
             "datasource": {
                 "type": "grafana-postgresql-datasource",
-                "uid": "augur_postgres_01"
+                "uid": "collectoss_postgres_01"
             },
             "fieldConfig": {
                 "defaults": {
@@ -562,7 +562,7 @@
                 {
                     "datasource": {
                         "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
+                        "uid": "collectoss_postgres_01"
                     },
                     "editorMode": "code",
                     "format": "table",
@@ -594,7 +594,7 @@
         {
             "datasource": {
                 "type": "grafana-postgresql-datasource",
-                "uid": "augur_postgres_01"
+                "uid": "collectoss_postgres_01"
             },
             "fieldConfig": {
                 "defaults": {
@@ -675,7 +675,7 @@
                 {
                     "datasource": {
                         "type": "grafana-postgresql-datasource",
-                        "uid": "augur_postgres_01"
+                        "uid": "collectoss_postgres_01"
                     },
                     "editorMode": "code",
                     "format": "table",
