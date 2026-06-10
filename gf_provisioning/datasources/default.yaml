@@ -1,7 +1,7 @@
 apiVersion: 1
 
 datasources:
-  - name: Augur Prometheus
+  - name: CollectOSS Prometheus
     type: prometheus
     url: http://prometheus:9090
     access: proxy # 'proxy' means the Grafana server handles requests
@@ -10,7 +10,7 @@ datasources:
     # This is the magic key!
     # Give it a unique, stable string.
     uid: collectoss_prometheus_01
-  - name: Augur Postgres
+  - name: CollectOSS Postgres
     uid: collectoss_postgres_01
     type: postgres
     url: ${POSTGRES_HOST}:${POSTGRES_PORT}
