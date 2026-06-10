@@ -47,7 +47,7 @@ services:
     # ports:
     #   - 9560:9560
     environment:
-      AUGUR_DSN: "postgresql+psycopg2://${AUGUR_DB_USER:-augur}:${AUGUR_DB_PASSWORD:-augur}@${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${DATABASE_NAME:-augur}?sslmode=disable"
+      DB_DSN: "postgresql+psycopg2://${AUGUR_DB_USER:-augur}:${AUGUR_DB_PASSWORD:-augur}@${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${DATABASE_NAME:-augur}?sslmode=disable"
     command:
       - --config
       - /etc/query-exporter/config.yaml
