@@ -1,8 +1,8 @@
-# Augur Monitoring Grafana Stack
-This repo contains a container stack (works with docker/podman compose) which sets up grafana and prometheus to monitor an Augur instance. This helps provide a more time-series look at various augur parameters and statistics for long-term health monitoring by the system admin.
+# CollectOSS Monitoring Grafana Stack
+This repo contains a container stack (works with docker/podman compose) which sets up grafana and prometheus to monitor an CollectOSS instance. This helps provide a more time-series look at various CollectOSS parameters and statistics for long-term health monitoring by the system admin.
 
 This includes:
-- monitoring the augur postgres database (requires a user with access)
+- monitoring the CollectOSS postgres database (requires a user with access)
 - monitoring celery tasks through flower (requires the flower interface to be up)
 
 
@@ -12,14 +12,14 @@ This includes:
 
 ## Setup:
 1. clone the repo
-2. create a .env file containing your Augur DB credentials and preferred grafana login. A template is available in `.env.sample`
+2. create a .env file containing your CollectOSS DB credentials and preferred grafana login. A template is available in `.env.sample`
 3.  (optional) for host metrics on debian systems, install the package `prometheus-node-exporter`
 4. do `podman compose up -d` or `docker compose up -d` from the root of the repo to start the monitoring stack
    - if you have a .env file with a different name than `.env`, you'll probably want to include `--env-file=<your env file>` in the command.
 
 ## Viewing the Dashboards:
 
-1. start up the augur stack
+1. start up the CollectOSS stack
 2. navigate to http://localhost:3000 in your browser
 3. login with the credentials admin/password
 4. navigate to Dashboards in the Web UI and select a dashboard
@@ -29,12 +29,12 @@ This includes:
 
 Grafana in particular takes a hot sec to start up (probably about a minute) before its accessible via the web interface (it has db migrations to do apparrently - the logs for this should be hidden by the instruction to only show error logs)
 
-This is intended and designed to run independently of augur (by relying on the ports that the augur docker stack exposes). This makes it possible to take augur down and back up without affecting the monitoring stack other than creating a gap in the graphs where no data could be collected.
+This is intended and designed to run independently of CollectOSS (by relying on the ports that the CollectOSS docker stack exposes). This makes it possible to take CollectOSS down and back up without affecting the monitoring stack other than creating a gap in the graphs where no data could be collected.
 
 
 ## Dashboards
 
-In addition to some useful off the shelf dashboards for monitoring things like Celery, Postgres, and the system host, there are also some custom dashboards for monitoring Augur itself using custom queries designed to actually look at the Augur database.
+In addition to some useful off the shelf dashboards for monitoring things like Celery, Postgres, and the system host, there are also some custom dashboards for monitoring CollectOSS itself using custom queries designed to actually look at the CollectOSS database.
 
 This uses https://github.com/albertodonato/query-exporter to make the results of postgres queries available to prometheus, which checks them periodically and stores the data for grafana to visualize.
 
