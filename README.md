@@ -1,5 +1,5 @@
 # CollectOSS Monitoring Grafana Stack
-This repo contains a container stack (works with docker/podman compose) which sets up grafana and prometheus to monitor an CollectOSS instance. This helps provide a more time-series look at various CollectOSS parameters and statistics for long-term health monitoring by the system admin.
+This repo contains a container stack (works with docker/podman compose) which sets up grafana and prometheus to monitor a CollectOSS instance. This helps provide a more time-series look at various CollectOSS parameters and statistics for long-term health monitoring by the system admin.
 
 This includes:
 - monitoring the CollectOSS postgres database (requires a user with access)
