@@ -16,7 +16,7 @@
             {
                 "datasource": {
                     "type": "prometheus",
-                    "uid": "augur_prometheus_01"
+                    "uid": "collectoss_prometheus_01"
                 },
                 "enable": false,
                 "hide": false
@@ -32,7 +32,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "augur_prometheus_01"
+                "uid": "collectoss_prometheus_01"
             },
             "fieldConfig": {
                 "defaults": {
@@ -707,7 +707,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "augur_prometheus_01"
+                "uid": "collectoss_prometheus_01"
             },
             "description": "Tracks the total number of repositories that have been collected within the last ${recent_days} days, broken down by collection phase.",
             "fieldConfig": {
@@ -794,7 +794,7 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "augur_prometheus_01"
+                        "uid": "collectoss_prometheus_01"
                     },
                     "disableTextWrap": false,
                     "editorMode": "code",
@@ -965,7 +965,7 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "augur_prometheus_01"
+                        "uid": "collectoss_prometheus_01"
                     },
                     "fieldConfig": {
                         "defaults": {
@@ -1077,7 +1077,7 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "augur_prometheus_01"
+                        "uid": "collectoss_prometheus_01"
                     },
                     "fieldConfig": {
                         "defaults": {
@@ -1189,7 +1189,7 @@
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "augur_prometheus_01"
+                        "uid": "collectoss_prometheus_01"
                     },
                     "fieldConfig": {
                         "defaults": {

@@ -9,7 +9,7 @@ datasources:
     isDefault: true
     # This is the magic key!
     # Give it a unique, stable string.
-    uid: augur_prometheus_01
+    uid: collectoss_prometheus_01
   - name: Augur Postgres
     uid: augur_postgres_01
     type: postgres

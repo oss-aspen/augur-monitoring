@@ -56,7 +56,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows status of celery workers. 1 = online, 0 = offline.",
       "fieldConfig": {
@@ -157,7 +157,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows number of tasks currently executing at worker.",
       "fieldConfig": {
@@ -258,7 +258,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows average task runtime at worker by worker and task name.",
       "fieldConfig": {
@@ -359,7 +359,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows task prefetch time at worker by worker and task name.",
       "fieldConfig": {
@@ -460,7 +460,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows number of tasks prefetched at worker by task and worker name.",
       "fieldConfig": {
@@ -561,7 +561,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel presents average task success ratio over time by task name.",
       "fieldConfig": {
@@ -662,7 +662,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel presents average task failure ratio over time by task name.",
       "fieldConfig": {
