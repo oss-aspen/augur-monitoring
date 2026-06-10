@@ -12,7 +12,7 @@ services:
       DS_PROMETHEUS_AUGUR: Augur Postgres
       AUGUR_POSTGRES_HOST: ${AUGUR_DB_HOST:-host.containers.internal}
       AUGUR_POSTGRES_PORT: ${AUGUR_DB_PORT:-5432}
-      AUGUR_POSTGRES_DB: "${AUGUR_DATABASE:-augur}"
+      AUGUR_POSTGRES_DB: "${DATABASE_NAME:-augur}"
       AUGUR_POSTGRES_USER: "${AUGUR_DB_USER:-augur}"
       AUGUR_POSTGRES_PASS: "${AUGUR_DB_PASSWORD:-augur}"
     volumes:
@@ -36,7 +36,7 @@ services:
     entrypoint: /bin/postgres_exporter --no-collector.wal
     env_file: .env
     environment:
-      DATA_SOURCE_URI: "${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${AUGUR_DATABASE:-augur}?sslmode=disable"
+      DATA_SOURCE_URI: "${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${DATABASE_NAME:-augur}?sslmode=disable"
       DATA_SOURCE_USER: "${AUGUR_DB_USER:-augur}"
       DATA_SOURCE_PASS: "${AUGUR_DB_PASSWORD:-augur}"
     extra_hosts:
@@ -47,7 +47,7 @@ services:
     # ports:
     #   - 9560:9560
     environment:
-      AUGUR_DSN: "postgresql+psycopg2://${AUGUR_DB_USER:-augur}:${AUGUR_DB_PASSWORD:-augur}@${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${AUGUR_DATABASE:-augur}?sslmode=disable"
+      AUGUR_DSN: "postgresql+psycopg2://${AUGUR_DB_USER:-augur}:${AUGUR_DB_PASSWORD:-augur}@${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${DATABASE_NAME:-augur}?sslmode=disable"
     command:
       - --config
       - /etc/query-exporter/config.yaml
