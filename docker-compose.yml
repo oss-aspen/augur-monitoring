@@ -9,7 +9,7 @@ services:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_USERNAME:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-password}
       GF_LOG_LEVEL: error
-      DS_PROMETHEUS_AUGUR: Augur Postgres
+      DS_PROMETHEUS_COLLECTOSS: CollectOSS Postgres
       POSTGRES_HOST: ${DB_HOST:-host.containers.internal}
       POSTGRES_PORT: ${DB_PORT:-5432}
       POSTGRES_DB: "${DATABASE_NAME:-augur}"

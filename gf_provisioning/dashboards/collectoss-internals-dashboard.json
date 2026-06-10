@@ -1307,7 +1307,7 @@
     "schemaVersion": 41,
     "tags": [
         "collection",
-        "augur"
+        "collectoss"
     ],
     "templating": {
         "list": [
@@ -1348,6 +1348,6 @@
     "timepicker": {},
     "timezone": "",
     "title": "CollectOSS Data Collection Status",
-    "uid": "augur-collection-status",
+    "uid": "collectoss-collection-status",
     "version": 9
 }
