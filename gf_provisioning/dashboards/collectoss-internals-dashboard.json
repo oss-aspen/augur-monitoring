@@ -169,7 +169,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Facade\nFROM augur_operations.collection_status \nWHERE \n(facade_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR facade_data_last_collected IS NULL) AND \nfacade_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Facade\nFROM operations.collection_status \nWHERE \n(facade_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR facade_data_last_collected IS NULL) AND \nfacade_status != 'Ignore'",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -188,7 +188,7 @@
                         ],
                         "limit": 50
                     },
-                    "table": "augur_operations.collection_status"
+                    "table": "operations.collection_status"
                 },
                 {
                     "datasource": {
@@ -199,7 +199,7 @@
                     "format": "table",
                     "hide": false,
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Core\nFROM augur_operations.collection_status \nWHERE \n(core_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR core_data_last_collected IS NULL) AND \ncore_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Core\nFROM operations.collection_status \nWHERE \n(core_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR core_data_last_collected IS NULL) AND \ncore_status != 'Ignore'",
                     "refId": "B",
                     "sql": {
                         "columns": [
@@ -228,7 +228,7 @@
                     "format": "table",
                     "hide": false,
                     "rawQuery": true,
-                    "rawSql": "SELECT count(*) as Secondary\nFROM augur_operations.collection_status \nWHERE \n(secondary_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR secondary_data_last_collected IS NULL)  AND \nsecondary_status != 'Ignore'",
+                    "rawSql": "SELECT count(*) as Secondary\nFROM operations.collection_status \nWHERE \n(secondary_data_last_collected < CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day') OR secondary_data_last_collected IS NULL)  AND \nsecondary_status != 'Ignore'",
                     "refId": "C",
                     "sql": {
                         "columns": [
@@ -341,7 +341,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(facade_data_last_collected)) FROM augur_operations.collection_status WHERE facade_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.facade_data_last_collected) AS facade_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.facade_data_last_collected))\n        AND cs.facade_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(facade_data_last_collected)) FROM operations.collection_status WHERE facade_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.facade_data_last_collected) AS facade_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.facade_data_last_collected))\n        AND cs.facade_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -454,7 +454,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(core_data_last_collected)) FROM augur_operations.collection_status WHERE core_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.core_data_last_collected) AS core_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.core_data_last_collected))\n        AND cs.core_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(core_data_last_collected)) FROM operations.collection_status WHERE core_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.core_data_last_collected) AS core_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.core_data_last_collected))\n        AND cs.core_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
@@ -567,7 +567,7 @@
                     "editorMode": "code",
                     "format": "table",
                     "rawQuery": true,
-                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(secondary_data_last_collected)) FROM augur_operations.collection_status WHERE secondary_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.secondary_data_last_collected) AS secondary_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        augur_operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.secondary_data_last_collected))\n        AND cs.secondary_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
+                    "rawSql": "WITH date_range AS (\n    SELECT generate_series(\n        LEAST(\n            (SELECT MIN(DATE(secondary_data_last_collected)) FROM operations.collection_status WHERE secondary_status != 'Ignore'),\n            CURRENT_DATE - INTERVAL '13 days'\n        ),\n        CURRENT_DATE,\n        '1 day'::interval\n    )::date AS collection_day\n),\nfinal_results AS (\n    SELECT \n        dr.collection_day, \n        COUNT(cs.secondary_data_last_collected) AS secondary_collections \n    FROM \n        date_range dr\n    LEFT JOIN \n        operations.collection_status cs \n        ON dr.collection_day = DATE(date_trunc('day', cs.secondary_data_last_collected))\n        AND cs.secondary_status != 'Ignore'\n    GROUP BY \n        dr.collection_day\n)\nSELECT * FROM final_results\n-- This filter logic handles the \"limit\" vs \"show all\"\nWHERE (\n    ${recent_days} = -1 \n    OR \n    collection_day >= CURRENT_DATE - (${recent_days}::int * INTERVAL '1 day')\n)\nORDER BY collection_day ASC;",
                     "refId": "A",
                     "sql": {
                         "columns": [
