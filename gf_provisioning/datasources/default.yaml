@@ -13,12 +13,12 @@ datasources:
   - name: Augur Postgres
     uid: augur_postgres_01
     type: postgres
-    url: ${AUGUR_POSTGRES_HOST}:${AUGUR_POSTGRES_PORT}
-    user: ${AUGUR_POSTGRES_USER}
+    url: ${POSTGRES_HOST}:${POSTGRES_PORT}
+    user: ${POSTGRES_USER}
     secureJsonData:
-      password: ${AUGUR_POSTGRES_PASS}
+      password: ${POSTGRES_PASS}
     jsonData:
-      database: ${AUGUR_POSTGRES_DB}
+      database: ${POSTGRES_DB}
       sslmode: "disable" # disable/require/verify-ca/verify-full
       maxOpenConns: 100
       maxIdleConns: 100

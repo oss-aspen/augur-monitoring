@@ -10,11 +10,11 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-password}
       GF_LOG_LEVEL: error
       DS_PROMETHEUS_AUGUR: Augur Postgres
-      AUGUR_POSTGRES_HOST: ${AUGUR_DB_HOST:-host.containers.internal}
-      AUGUR_POSTGRES_PORT: ${AUGUR_DB_PORT:-5432}
-      AUGUR_POSTGRES_DB: "${DATABASE_NAME:-augur}"
-      AUGUR_POSTGRES_USER: "${AUGUR_DB_USER:-augur}"
-      AUGUR_POSTGRES_PASS: "${AUGUR_DB_PASSWORD:-augur}"
+      POSTGRES_HOST: ${DB_HOST:-host.containers.internal}
+      POSTGRES_PORT: ${DB_PORT:-5432}
+      POSTGRES_DB: "${DATABASE_NAME:-augur}"
+      POSTGRES_USER: "${DB_USER:-augur}"
+      POSTGRES_PASS: "${DB_PASSWORD:-augur}"
     volumes:
       - ./gf_provisioning/dashboards:/etc/grafana/provisioning/dashboards:z
       - ./gf_provisioning/datasources:/etc/grafana/provisioning/datasources:z
@@ -36,9 +36,9 @@ services:
     entrypoint: /bin/postgres_exporter --no-collector.wal
     env_file: .env
     environment:
-      DATA_SOURCE_URI: "${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${DATABASE_NAME:-augur}?sslmode=disable"
-      DATA_SOURCE_USER: "${AUGUR_DB_USER:-augur}"
-      DATA_SOURCE_PASS: "${AUGUR_DB_PASSWORD:-augur}"
+      DATA_SOURCE_URI: "${DB_HOST:-host.containers.internal}:${DB_PORT:-5432}/${DATABASE_NAME:-augur}?sslmode=disable"
+      DATA_SOURCE_USER: "${DB_USER:-augur}"
+      DATA_SOURCE_PASS: "${DB_PASSWORD:-augur}"
     extra_hosts:
       - "host.containers.internal:host-gateway"
 
@@ -47,7 +47,7 @@ services:
     # ports:
     #   - 9560:9560
     environment:
-      DB_DSN: "postgresql+psycopg2://${AUGUR_DB_USER:-augur}:${AUGUR_DB_PASSWORD:-augur}@${AUGUR_DB_HOST:-host.containers.internal}:${AUGUR_DB_PORT:-5432}/${DATABASE_NAME:-augur}?sslmode=disable"
+      DB_DSN: "postgresql+psycopg2://${DB_USER:-augur}:${DB_PASSWORD:-augur}@${DB_HOST:-host.containers.internal}:${DB_PORT:-5432}/${DATABASE_NAME:-augur}?sslmode=disable"
     command:
       - --config
       - /etc/query-exporter/config.yaml
