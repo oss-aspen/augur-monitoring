@@ -206,30 +206,30 @@ queries:
     databases: [augur]
     metrics: [augur_contributors_emails_populated_counts]
     sql: |
-      SELECT 'cntrb_email' AS column, COUNT(c.cntrb_email) as augur_contributors_emails_populated_counts from augur_data.contributors c
+      SELECT 'cntrb_email' AS column, COUNT(c.cntrb_email) as augur_contributors_emails_populated_counts from data.contributors c
       UNION ALL
-      SELECT 'cntrb_canonical' AS column, COUNT(c.cntrb_canonical) as augur_contributors_emails_populated_counts from augur_data.contributors c;
+      SELECT 'cntrb_canonical' AS column, COUNT(c.cntrb_canonical) as augur_contributors_emails_populated_counts from data.contributors c;
   commit_email_populated_counts:
     interval: 60s
     databases: [augur]
     metrics: [augur_commits_emails_populated_counts]
     sql: |
-      SELECT 'cmt_author_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      SELECT 'cmt_author_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from data.commits c
       UNION ALL
-      SELECT 'cmt_author_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      SELECT 'cmt_author_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from data.commits c
       UNION ALL
-      SELECT 'cmt_committer_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      SELECT 'cmt_committer_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from data.commits c
       UNION ALL
-      SELECT 'cmt_committer_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c;
+      SELECT 'cmt_committer_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from data.commits c;
   # this is the perfectly precise method but takes too much time to run/performance hit
   # row_counts_by_table:
   #   interval: 60s
   #   databases: [augur]
   #   metrics: [augur_contributors_emails_total_counts]
   #   sql: |
-  #     SELECT 'contributors' AS column, COUNT(*) as count from augur_data.contributors;
+  #     SELECT 'contributors' AS column, COUNT(*) as count from data.contributors;
   #     UNION ALL
-  #     SELECT 'commits' AS column, COUNT(*) as count from augur_data.contributors c;
+  #     SELECT 'commits' AS column, COUNT(*) as count from data.contributors c;
   row_count_estimates_by_table:
     interval: 30s
     databases: [augur]
