@@ -13,6 +13,12 @@ scrape_configs:
   - job_name: flower
     static_configs:
       - targets: ["host.containers.internal:5555"]
+    metric_relabel_configs:
+    # Clean up worker names (extracts base name like 'facade')
+      - source_labels: [worker]
+        regex: '^([^:@]+).*'
+        target_label: clean_worker
+        replacement: '$1'
   - job_name: host
     static_configs:
       - targets: ["host.containers.internal:9100"]
