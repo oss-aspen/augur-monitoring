@@ -56,7 +56,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows status of celery workers. 1 = online, 0 = offline.",
       "fieldConfig": {
@@ -111,6 +111,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Celery Worker Status",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -157,7 +203,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows number of tasks currently executing at worker.",
       "fieldConfig": {
@@ -213,6 +259,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Number of Tasks Currently Executing at Worker",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -258,7 +350,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows average task runtime at worker by worker and task name.",
       "fieldConfig": {
@@ -314,6 +406,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Average Task Runtime at Worker",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -359,7 +497,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows task prefetch time at worker by worker and task name.",
       "fieldConfig": {
@@ -415,6 +553,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Task Prefetch Time at Worker",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -460,7 +644,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel shows number of tasks prefetched at worker by task and worker name.",
       "fieldConfig": {
@@ -516,6 +700,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Number of Tasks Prefetched At Worker",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -561,7 +791,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel presents average task success ratio over time by task name.",
       "fieldConfig": {
@@ -617,6 +847,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Task Success Ratio",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -662,7 +938,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "This panel presents average task failure ratio over time by task name.",
       "fieldConfig": {
@@ -718,6 +994,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Task Failure Ratio",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,

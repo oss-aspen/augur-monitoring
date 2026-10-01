@@ -80,7 +80,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "none",
       "gauge": {
@@ -166,7 +166,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "start time of the process",
       "format": "dateTimeFromNow",
@@ -252,7 +252,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "decbytes",
       "gauge": {
@@ -338,7 +338,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "short",
       "gauge": {
@@ -424,7 +424,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "short",
       "gauge": {
@@ -510,7 +510,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "none",
       "gauge": {
@@ -590,7 +590,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Average user and system CPU time spent in seconds.",
       "fill": 1,
@@ -684,7 +684,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Virtual and Resident memory size in bytes, averages over 5 min interval",
       "fill": 1,
@@ -786,7 +786,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Number of open file descriptors",
       "fill": 1,
@@ -898,7 +898,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "bytes",
       "gauge": {
@@ -982,7 +982,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "bytes",
       "gauge": {
@@ -1066,7 +1066,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "bytes",
       "gauge": {
@@ -1150,7 +1150,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "bytes",
       "gauge": {
@@ -1235,7 +1235,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "decimals": 1,
       "format": "bytes",
@@ -1320,7 +1320,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "none",
       "gauge": {
@@ -1404,7 +1404,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "none",
       "gauge": {
@@ -1488,7 +1488,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "none",
       "gauge": {
@@ -1572,7 +1572,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "format": "none",
       "gauge": {
@@ -1665,7 +1665,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1764,7 +1764,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1865,7 +1865,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1963,7 +1963,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -2060,7 +2060,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -2157,7 +2157,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "decimals": 0,
       "fill": 1,
@@ -2257,7 +2257,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -2354,7 +2354,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -2451,7 +2451,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -2548,7 +2548,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "decimals": 2,
       "fill": 1,
@@ -2640,7 +2640,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "gridPos": {
@@ -2758,7 +2758,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "decimals": 0,
       "fill": 1,
@@ -2856,7 +2856,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Total amount of data written to temporary files by queries in this database. All temporary files are counted, regardless of why the temporary file was created, and regardless of the log_temp_files setting.",
       "fill": 1,
@@ -2947,7 +2947,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fill": 1,
       "gridPos": {
@@ -3119,9 +3119,9 @@
         "allValue": null,
         "current": {},
         "datasource": {
-        "type": "prometheus",
-        "uid": "augur_prometheus_01"
-      },
+          "type": "prometheus",
+          "uid": "collectoss_prometheus_01"
+        },
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -3144,9 +3144,9 @@
         "allValue": null,
         "current": {},
         "datasource": {
-        "type": "prometheus",
-        "uid": "augur_prometheus_01"
-      },
+          "type": "prometheus",
+          "uid": "collectoss_prometheus_01"
+        },
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -3169,9 +3169,9 @@
         "allValue": null,
         "current": {},
         "datasource": {
-        "type": "prometheus",
-        "uid": "augur_prometheus_01"
-      },
+          "type": "prometheus",
+          "uid": "collectoss_prometheus_01"
+        },
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -3194,9 +3194,9 @@
         "allValue": null,
         "current": {},
         "datasource": {
-        "type": "prometheus",
-        "uid": "augur_prometheus_01"
-      },
+          "type": "prometheus",
+          "uid": "collectoss_prometheus_01"
+        },
         "definition": "",
         "hide": 0,
         "includeAll": true,
@@ -3219,9 +3219,9 @@
         "allValue": null,
         "current": {},
         "datasource": {
-        "type": "prometheus",
-        "uid": "augur_prometheus_01"
-      },
+          "type": "prometheus",
+          "uid": "collectoss_prometheus_01"
+        },
         "definition": "",
         "hide": 0,
         "includeAll": true,

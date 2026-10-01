@@ -37,7 +37,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Time since last boot",
       "fieldConfig": {
@@ -93,7 +93,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "node_time_seconds{instance=~\"$host\"} - node_boot_time_seconds{instance=~\"$host\"}",
           "format": "time_series",
@@ -110,7 +110,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Number of processors",
       "fieldConfig": {
@@ -165,7 +165,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "count(count(node_cpu_seconds_total{instance=~\"$host\"}) by (cpu))",
           "format": "time_series",
@@ -180,7 +180,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Amount of memory",
       "fieldConfig": {
@@ -236,7 +236,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "node_memory_MemTotal_bytes{instance=~\"$host\"}",
           "format": "time_series",
@@ -252,7 +252,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -317,7 +317,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "1 - avg(irate(node_cpu_seconds_total{mode=\"idle\",instance=~\"$host\"}[5m]))",
           "format": "time_series",
@@ -333,7 +333,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -398,7 +398,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "1 - node_memory_MemAvailable_bytes{instance=~\"$host\"} / node_memory_MemTotal_bytes{instance=~\"$host\"}",
           "format": "time_series",
@@ -413,7 +413,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Free diskspace",
       "fieldConfig": {
@@ -479,7 +479,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "1 - (sum(node_filesystem_free_bytes{instance=~\"$host\"}) / sum(node_filesystem_size_bytes{instance=~\"$host\"}))",
           "format": "time_series",
@@ -495,7 +495,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Network traffic in the last hour",
       "fieldConfig": {
@@ -554,7 +554,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "sum(increase(node_network_receive_bytes_total{instance=~\"$host\"}[24h]))",
           "format": "time_series",
@@ -569,7 +569,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "description": "Network traffic in the last hour",
       "fieldConfig": {
@@ -628,7 +628,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "sum(increase(node_network_transmit_bytes_total{instance=~\"$host\"}[24h]))",
           "format": "time_series",
@@ -643,7 +643,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -767,7 +767,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "node_filesystem_free_bytes{fstype!~\"(tmpfs|rootfs).*\",instance=~\"$host\"}",
           "format": "table",
@@ -804,7 +804,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -895,7 +895,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "sum by (mode) (irate(node_cpu_seconds_total{instance=~\"$host\"}[5m]))",
           "format": "time_series",
@@ -924,7 +924,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -1014,7 +1014,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "node_memory_MemFree_bytes{instance=~\"$host\"} > 0",
           "format": "time_series",
@@ -1026,7 +1026,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "node_memory_MemTotal_bytes{instance=~\"$host\"} > 0",
           "format": "time_series",
@@ -1038,7 +1038,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "node_memory_MemAvailable_bytes{instance=~\"$host\"} > 0",
           "format": "time_series",
@@ -1066,7 +1066,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -1155,7 +1155,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "irate(node_network_receive_bytes_total{instance=~\"$host\",device=~\"(?i)^(ens|eth).+$\"}[5m])  > 0",
           "format": "time_series",
@@ -1167,7 +1167,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "- irate(node_network_transmit_bytes_total{instance=~\"$host\",device=~\"(?i)^(ens|eth).+$\"}[5m]) < 0",
           "format": "time_series",
@@ -1183,7 +1183,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -1273,7 +1273,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "irate(node_network_receive_errs_total{instance=~\"$host\",device=~\"(?i)^(ens|eth).+$\"}[5m]) + irate(node_network_receive_drop_total{instance=~\"$host\",device=~\"(?i)^(ens|eth).+$\"}[5m])",
           "format": "time_series",
@@ -1285,7 +1285,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "- (irate(node_network_transmit_errs_total{instance=~\"$host\",device=~\"(?i)^(ens|eth).+$\"}[5m]) + irate(node_network_transmit_drop_total{instance=~\"$host\",device=~\"(?i)^(ens|eth).+$\"}[5m]))",
           "format": "time_series",
@@ -1315,7 +1315,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -1403,7 +1403,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "node_filesystem_free_bytes{instance=~\"$host\",fstype!~\"(tmpfs|rootfs)\"}",
           "format": "time_series",
@@ -1419,7 +1419,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -1508,7 +1508,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "irate(node_disk_read_bytes_total{instance=~\"$host\"}[5m]) > 0",
           "format": "time_series",
@@ -1521,7 +1521,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "- irate(node_disk_written_bytes_total{instance=~\"$host\"}[5m]) < 0",
           "format": "time_series",
@@ -1537,7 +1537,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -1626,7 +1626,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "irate(node_disk_read_time_seconds_total{instance=~\"$host\"}[5m]) > 0",
           "format": "time_series",
@@ -1637,7 +1637,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "augur_prometheus_01"
+            "uid": "collectoss_prometheus_01"
           },
           "expr": "- irate(node_disk_write_time_seconds_total{instance=~\"$host\"}[5m]) < 0",
           "format": "time_series",
@@ -1665,7 +1665,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -1780,7 +1780,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "augur_prometheus_01"
+        "uid": "collectoss_prometheus_01"
       },
       "fieldConfig": {
         "defaults": {
@@ -1924,7 +1924,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "augur_prometheus_01"
+          "uid": "collectoss_prometheus_01"
         },
         "definition": "label_values(node_time_seconds{job=\"$job\"},instance)",
         "includeAll": false,
@@ -1941,7 +1941,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "augur_prometheus_01"
+          "uid": "collectoss_prometheus_01"
         },
         "definition": "label_values(node_boot_time_seconds,job)",
         "includeAll": false,

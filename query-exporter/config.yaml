@@ -1,8 +1,8 @@
 databases:
-  augur:
-    dsn: !env AUGUR_DSN
-    # user: !env AUGUR_DB_USER
-    # password: !env AUGUR_DB_PASSWORD
+  collectoss:
+    dsn: !env DB_DSN
+    # user: !env DB_USER
+    # password: !env DB_PASSWORD
 
 # This query exporter is for fetching values that have no easy way to query them as time series in postgres
 # This is because any metric type besides gauge will acumulate values over time. and also prometheus does that... and its a bit of a mess.
@@ -10,41 +10,41 @@ databases:
 # For queries that are already returning data that is basically ready to graph, maybe doing it in grafana is best
 # although large queries might have a performance hit if run too frequently, idk.
 metrics:
-  augur_collection_status_counts:
+  collectoss_collection_status_counts:
     type: gauge
     labels: [collection_state, collection_phase]
     description: Number of repositories in each different state for each phase of collection.
-  augur_collection_status_total:
+  collectoss_collection_status_total:
     type: gauge
     description: Number of total repositories in the collection status table, ignoring repos where facade state is Ignore.
-  augur_collection_status_full_total:
+  collectoss_collection_status_full_total:
     type: gauge
     description: Number of total repositories in the collection status table, including ignored values.
-  augur_never_collected_counts:
+  collectoss_never_collected_counts:
     type: gauge
     labels: [collection_phase]
     description: Number of repositories in each different state for each phase of collection that have never had collection.
-  augur_collected_recently_counts:
+  collectoss_collected_recently_counts:
     type: gauge
     labels: [collection_phase, days_ago]
     description: Number of repositories with last collected dates for each phase of collection across the past 30 days
-  augur_14d_counts:
+  collectoss_14d_counts:
     type: gauge
     labels: [collection_phase]
     description: Total number of repositories with last collected dates for each phase of collection less than 14 days ago
-  augur_commits_emails_populated_counts:
+  collectoss_commits_emails_populated_counts:
     type: gauge
     labels: [column]
     description: Number of total populated (non-null) values in each email addresses column of the commits table.
-  augur_contributors_emails_populated_counts:
+  collectoss_contributors_emails_populated_counts:
     type: gauge
     labels: [column]
     description: Number of total populated (non-null) values in each email addresses column of the contributors table.
-  augur_rows_by_table_estimate:
+  collectoss_rows_by_table_estimate:
     type: gauge
     labels: [schema, table]
     description: Number of total live tuples entries in each table as estimated by pg_stat_user_tables.
-  augur_dead_rows_by_table_estimate:
+  collectoss_dead_rows_by_table_estimate:
     type: gauge
     labels: [schema, table]
     description: Number of total live tuples entries in each table as estimated by pg_stat_user_tables.
@@ -52,13 +52,13 @@ metrics:
 queries:
   collection_status_counts:
     interval: 30s
-    databases: [augur]
-    metrics: [augur_collection_status_counts]
+    databases: [collectoss]
+    metrics: [collectoss_collection_status_counts]
     sql: |
       SELECT
           collection_phase,
           collection_state,
-          COALESCE(count, 0) AS augur_collection_status_counts
+          COALESCE(count, 0) AS collectoss_collection_status_counts
       FROM (
           SELECT 'core' AS collection_phase, unnest(ARRAY['Pending', 'Error', 'Success', 'Ignore']) AS collection_state
           UNION ALL
@@ -69,19 +69,19 @@ queries:
       LEFT JOIN (
           SELECT
               'core' AS collection_phase, core_status AS collection_state, COUNT(*) as count
-          FROM augur_operations.collection_status
+          FROM operations.collection_status
           WHERE core_status IN ('Pending', 'Error', 'Success', 'Ignore')
           GROUP BY 1, 2
           UNION ALL
           SELECT
               'secondary' AS collection_phase, secondary_status AS collection_state, COUNT(*) as count
-          FROM augur_operations.collection_status
+          FROM operations.collection_status
           WHERE secondary_status IN ('Pending', 'Error', 'Success', 'Ignore')
           GROUP BY 1, 2
           UNION ALL
           SELECT
               'facade' AS collection_phase, facade_status AS collection_state, COUNT(*) as count 
-          FROM augur_operations.collection_status
+          FROM operations.collection_status
           WHERE facade_status IN ('Pending', 'Error', 'Success', 'Ignore')
           GROUP BY 1, 2
       ) AS actual_counts
@@ -89,12 +89,12 @@ queries:
       ORDER BY collection_phase, collection_state;
   never_collected_counts:
     interval: 30s
-    databases: [augur]
-    metrics: [augur_never_collected_counts]
+    databases: [collectoss]
+    metrics: [collectoss_never_collected_counts]
     sql: |
       SELECT
           collection_phase,
-          COALESCE(count, 0) AS augur_never_collected_counts
+          COALESCE(count, 0) AS collectoss_never_collected_counts
       FROM (
           SELECT 'core' AS collection_phase
           UNION ALL
@@ -105,49 +105,49 @@ queries:
       LEFT JOIN (
           SELECT
               'core' AS collection_phase, COUNT(*) as count
-          FROM augur_operations.collection_status
+          FROM operations.collection_status
           WHERE core_data_last_collected IS NULL
           UNION ALL
           SELECT
               'secondary' AS collection_phase, COUNT(*) as count
-          FROM augur_operations.collection_status
+          FROM operations.collection_status
           WHERE secondary_data_last_collected IS NULL
           UNION ALL
           SELECT
               'facade' AS collection_phase, COUNT(*) as count 
-          FROM augur_operations.collection_status
+          FROM operations.collection_status
           WHERE facade_data_last_collected IS NULL
       ) AS actual_counts
       USING (collection_phase)
       ORDER BY collection_phase;
   total:
     interval: 30s
-    databases: [augur]
-    metrics: [augur_collection_status_total]
+    databases: [collectoss]
+    metrics: [collectoss_collection_status_total]
     sql: |
       SELECT
-        COUNT(*) AS augur_collection_status_total
-      FROM augur_operations.collection_status
+        COUNT(*) AS collectoss_collection_status_total
+      FROM operations.collection_status
       WHERE facade_status != 'Ignore'
   full_total:
     interval: 30s
-    databases: [augur]
-    metrics: [augur_collection_status_full_total]
+    databases: [collectoss]
+    metrics: [collectoss_collection_status_full_total]
     sql: |
       SELECT
-        COUNT(*) AS augur_collection_status_full_total
-      FROM augur_operations.collection_status
+        COUNT(*) AS collectoss_collection_status_full_total
+      FROM operations.collection_status
   recency_check:
     interval: 60s
-    databases: [augur]
-    metrics: [augur_collected_recently_counts]
+    databases: [collectoss]
+    metrics: [collectoss_collected_recently_counts]
     sql: |
       select
         'core' as collection_phase,
           EXTRACT(DAY from date_trunc('day', current_date - core_data_last_collected)) AS days_ago,
-          COUNT(*) AS augur_collected_recently_counts
+          COUNT(*) AS collectoss_collected_recently_counts
       FROM
-          augur_operations.collection_status
+          operations.collection_status
       WHERE
           core_status != 'Ignore'
       GROUP BY
@@ -156,9 +156,9 @@ queries:
       select
         'secondary' as collection_phase,
           EXTRACT(DAY from date_trunc('day', current_date - secondary_data_last_collected)) AS days_ago,
-          COUNT(*) AS augur_collected_recently_counts
+          COUNT(*) AS collectoss_collected_recently_counts
       FROM
-          augur_operations.collection_status
+          operations.collection_status
       WHERE
           core_status != 'Ignore'
       GROUP BY
@@ -167,9 +167,9 @@ queries:
       select
         'facade' as collection_phase,
           EXTRACT(DAY from date_trunc('day', current_date - facade_data_last_collected)) AS days_ago,
-          COUNT(*) AS augur_collected_recently_counts
+          COUNT(*) AS collectoss_collected_recently_counts
       FROM
-          augur_operations.collection_status
+          operations.collection_status
       WHERE
           core_status != 'Ignore'
       GROUP BY
@@ -178,75 +178,75 @@ queries:
           days_ago;
   recency_14d:
     interval: 60s
-    databases: [augur]
-    metrics: [augur_14d_counts]
+    databases: [collectoss]
+    metrics: [collectoss_14d_counts]
     sql: |
       select
         'core' as collection_phase,
-          COUNT(*) AS augur_14d_counts
+          COUNT(*) AS collectoss_14d_counts
       FROM
-          augur_operations.collection_status
+          operations.collection_status
       WHERE core_data_last_collected > (CURRENT_DATE - interval '14 days') AND core_status != 'Ignore'
       UNION all
       select
         'secondary' as collection_phase,
-          COUNT(*) AS augur_14d_counts
+          COUNT(*) AS collectoss_14d_counts
       FROM
-          augur_operations.collection_status
+          operations.collection_status
       WHERE secondary_data_last_collected > (CURRENT_DATE - interval '14 days') AND secondary_status != 'Ignore'
       UNION all
       select
         'facade' as collection_phase,
-          COUNT(*) AS augur_14d_counts
+          COUNT(*) AS collectoss_14d_counts
       FROM
-          augur_operations.collection_status
+          operations.collection_status
       WHERE facade_data_last_collected > (CURRENT_DATE - interval '14 days') AND facade_status != 'Ignore'
   contributor_email_populated_counts:
     interval: 60s
-    databases: [augur]
-    metrics: [augur_contributors_emails_populated_counts]
+    databases: [collectoss]
+    metrics: [collectoss_contributors_emails_populated_counts]
     sql: |
-      SELECT 'cntrb_email' AS column, COUNT(c.cntrb_email) as augur_contributors_emails_populated_counts from augur_data.contributors c
+      SELECT 'cntrb_email' AS column, COUNT(c.cntrb_email) as collectoss_contributors_emails_populated_counts from data.contributors c
       UNION ALL
-      SELECT 'cntrb_canonical' AS column, COUNT(c.cntrb_canonical) as augur_contributors_emails_populated_counts from augur_data.contributors c;
+      SELECT 'cntrb_canonical' AS column, COUNT(c.cntrb_canonical) as collectoss_contributors_emails_populated_counts from data.contributors c;
   commit_email_populated_counts:
     interval: 60s
-    databases: [augur]
-    metrics: [augur_commits_emails_populated_counts]
+    databases: [collectoss]
+    metrics: [collectoss_commits_emails_populated_counts]
     sql: |
-      SELECT 'cmt_author_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      SELECT 'cmt_author_raw_email' as column, COUNT(c.cmt_author_raw_email) as collectoss_commits_emails_populated_counts from data.commits c
       UNION ALL
-      SELECT 'cmt_author_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      SELECT 'cmt_author_email' as column, COUNT(c.cmt_author_raw_email) as collectoss_commits_emails_populated_counts from data.commits c
       UNION ALL
-      SELECT 'cmt_committer_raw_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c
+      SELECT 'cmt_committer_raw_email' as column, COUNT(c.cmt_author_raw_email) as collectoss_commits_emails_populated_counts from data.commits c
       UNION ALL
-      SELECT 'cmt_committer_email' as column, COUNT(c.cmt_author_raw_email) as augur_commits_emails_populated_counts from augur_data.commits c;
+      SELECT 'cmt_committer_email' as column, COUNT(c.cmt_author_raw_email) as collectoss_commits_emails_populated_counts from data.commits c;
   # this is the perfectly precise method but takes too much time to run/performance hit
   # row_counts_by_table:
   #   interval: 60s
-  #   databases: [augur]
-  #   metrics: [augur_contributors_emails_total_counts]
+  #   databases: [collectoss]
+  #   metrics: [collectoss_contributors_emails_total_counts]
   #   sql: |
-  #     SELECT 'contributors' AS column, COUNT(*) as count from augur_data.contributors;
+  #     SELECT 'contributors' AS column, COUNT(*) as count from data.contributors;
   #     UNION ALL
-  #     SELECT 'commits' AS column, COUNT(*) as count from augur_data.contributors c;
+  #     SELECT 'commits' AS column, COUNT(*) as count from data.contributors c;
   row_count_estimates_by_table:
     interval: 30s
-    databases: [augur]
-    metrics: [augur_rows_by_table_estimate]
+    databases: [collectoss]
+    metrics: [collectoss_rows_by_table_estimate]
     sql: |
       SELECT 
         schemaname as schema, 
         relname as table, 
-        n_live_tup AS augur_rows_by_table_estimate
+        n_live_tup AS collectoss_rows_by_table_estimate
       FROM pg_stat_user_tables;
   dead_row_count_estimates_by_table:
     interval: 30s
-    databases: [augur]
-    metrics: [augur_dead_rows_by_table_estimate]
+    databases: [collectoss]
+    metrics: [collectoss_dead_rows_by_table_estimate]
     sql: |
       SELECT
         schemaname as schema,
         relname as table,
-        n_dead_tup AS augur_dead_rows_by_table_estimate
+        n_dead_tup AS collectoss_dead_rows_by_table_estimate
       FROM pg_stat_user_tables;
