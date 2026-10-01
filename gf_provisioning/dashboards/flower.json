@@ -111,6 +111,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Celery Worker Status",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -213,6 +259,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Number of Tasks Currently Executing at Worker",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -314,6 +406,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Average Task Runtime at Worker",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -415,6 +553,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Task Prefetch Time at Worker",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -516,6 +700,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Number of Tasks Prefetched At Worker",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -617,6 +847,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Task Success Ratio",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -718,6 +994,52 @@
       "timeRegions": [],
       "timeShift": null,
       "title": "Task Failure Ratio",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^(.*?):.*$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "core": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "facade": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "frontend": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "scheduling": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "secondary": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        }
+      ],
       "tooltip": {
         "shared": true,
         "sort": 0,
